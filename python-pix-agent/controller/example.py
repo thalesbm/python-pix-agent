@@ -1,10 +1,14 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from langchain_core.messages import HumanMessage
+from langchain_core.runnables.graph import MermaidDrawMethod
+from pydantic import BaseModel
+from typing import TypedDict, Optional
+
 
 # 1. Definindo o estado da conversa
-class ConversationState(dict):
-    pass
+class ConversationState(BaseModel):
+    tipo: Optional[str] = None
 
 # 2. Nós (funções) do grafo
 def boas_vindas(state: ConversationState) -> ConversationState:
@@ -13,7 +17,7 @@ def boas_vindas(state: ConversationState) -> ConversationState:
 
 def perguntar_tipo_ajuda(state: ConversationState) -> ConversationState:
     resposta = input("Você precisa de ajuda com (vendas ou suporte)? ").strip().lower()
-    state["tipo"] = resposta
+    state.tipo = resposta
     return state
 
 def fluxo_vendas(state: ConversationState) -> ConversationState:
@@ -44,7 +48,7 @@ graph_builder.add_edge("boas_vindas", "pergunta")
 
 # Fluxo condicional
 def decide_proximo_no(state: ConversationState):
-    tipo = state.get("tipo")
+    tipo = state.tipo
     if tipo == "vendas":
         return "vendas"
     elif tipo == "suporte":
@@ -76,3 +80,9 @@ print("🚀 Iniciando execução do grafo...")
 result = graph.invoke(ConversationState())
 print("✅ Grafo executado com sucesso!")
 print(f"📊 Estado final: {result}")
+
+png_bytes = graph.get_graph().draw_mermaid_png(
+    draw_method=MermaidDrawMethod.API
+)
+with open("grafo_exemplo1.png", "wb") as f:
+    f.write(png_bytes)
