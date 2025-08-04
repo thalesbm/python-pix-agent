@@ -3,8 +3,8 @@ Configuração centralizada do Python Pix Agent.
 Configurações otimizadas para desenvolvimento.
 """
 
-from config.logging_config import LoggingConfig
-from config.openai_config import OpenAIConfig
+from .logging_config import LoggingConfig
+from .openai_config import OpenAIConfig
 
 class Config:
     """Classe principal de configuração para desenvolvimento."""
