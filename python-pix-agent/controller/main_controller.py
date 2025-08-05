@@ -1,40 +1,30 @@
-from infra.openai_client import OpenAIClientFactory
-from langchain_openai.chat_models import ChatOpenAI
-from logger import get_logger
-from pipeline.openai import Key
-from model.graph_state import GraphState
+from model import GraphState
 from langgraph.graph import StateGraph
-
-logger = get_logger(__name__)
+from langchain_core.runnables import RunnableLambda
+from langchain_core.runnables.graph import MermaidDrawMethod
+from graph.nodes.input_message import input_message
+from graph.nodes.check_intention import check_intention
+from graph.nodes.receipt import receipt
 
 class MainController:
     def __init__(self):
-        self.api_key = Key.get_openai_key()
-        self.openai_client = OpenAIClientFactory(api_key=self.api_key)
+        pass
 
     def run(self):
-        
-        chat: ChatOpenAI = self.openai_client.create_basic_client()
+        graph_builder = StateGraph(GraphState)
 
-    
-        # 5 - Criando o Graph
-        graph = StateGraph(GraphState)
-        # graph.add_node("responder", responder)
-        graph.set_entry_point("responder")
-        graph.set_finish_point("responder")
+        graph_builder.add_node("input_message", RunnableLambda(input_message))
+        graph_builder.add_node("check_intention", RunnableLambda(check_intention))
+        graph_builder.add_node("receipt", RunnableLambda(receipt))
 
-        # 6 - Compilando o Grafo
-        export_graph = graph.compile()
+        graph_builder.set_entry_point("input_message")
+        graph_builder.add_edge("input_message", "check_intention")
+        graph_builder.add_edge("check_intention", "welcome")
 
+        graph = graph_builder.compile()
 
-        
-    # def responder(state):
-    #     input_message = state.input
-    #     response = llm_model.invoke([HumanMessage(content=input_message)])
-    #     return GraphState(
-    #         input=state.input, 
-    #         output=response.content
-    #     )
-
-
-
+        png_bytes = graph.get_graph().draw_mermaid_png(
+            draw_method=MermaidDrawMethod.API
+        )
+        with open("files/grafo_exemplo1.png", "wb") as f:
+            f.write(png_bytes)

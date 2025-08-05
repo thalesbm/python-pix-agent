@@ -81,8 +81,8 @@ result = graph.invoke(ConversationState())
 print("✅ Grafo executado com sucesso!")
 print(f"📊 Estado final: {result}")
 
-png_bytes = graph.get_graph().draw_mermaid_png(
-    draw_method=MermaidDrawMethod.API
-)
-with open("grafo_exemplo1.png", "wb") as f:
-    f.write(png_bytes)
+# png_bytes = graph.get_graph().draw_mermaid_png(
+#     draw_method=MermaidDrawMethod.API
+# )
+# with open("grafo_exemplo1.png", "wb") as f:
+#     f.write(png_bytes)
