@@ -1,10 +1,10 @@
 from model.graph_state import GraphState
-from langgraph.graph import StateGraph, END, CompiledStateGraph
+from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.nodes.input_message import input_message
 from graph.nodes.check_intention import check_intention
 from graph.nodes.receipt import receipt
-from utils.print_graph import print_graph
+from utils.print_graph import print_graph   
 
 class MainController:
     def __init__(self):
@@ -22,6 +22,6 @@ class MainController:
         graph_builder.add_edge("check_intention", "receipt")
         graph_builder.add_edge("receipt", END)
 
-        graph: CompiledStateGraph = graph_builder.compile()
+        graph = graph_builder.compile()
 
         print_graph(graph)
