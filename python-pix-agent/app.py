@@ -29,11 +29,11 @@ def init():
 
     MainView.set_view(get_form)
 
-def get_form(question: str):
-    logger.info(f"Intenção recebida: {question}")
+def get_form(message: str):
+    logger.info(f"Mensagem recebida: {message}")
 
     controller = MainController()
-    controller.run(question)
+    controller.run(message)
 
 
 if __name__ == "__main__":
