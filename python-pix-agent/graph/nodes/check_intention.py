@@ -18,7 +18,6 @@ def check_intention(state: GraphState) -> GraphState:
         - consultar_limite
         - agendar_pix
         - realizar_pix
-        - cancelar_agendamento
 
         Mensagem: "{state.user_message}"
         Intenção:"""
