@@ -1,4 +1,4 @@
-from model.graph_state import GraphState
+from graph_state import GraphState
 
 import time
 

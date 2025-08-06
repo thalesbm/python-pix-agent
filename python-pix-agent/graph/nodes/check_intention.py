@@ -1,4 +1,4 @@
-from model.graph_state import GraphState
+from graph.graph_state import GraphState
 from infra.openai_client import OpenAIClientFactory
 from pipeline.openai import Key
 from langchain_openai.chat_models import ChatOpenAI
@@ -16,10 +16,12 @@ def check_intention(state: GraphState) -> GraphState:
     prompt = f"""
         A partir da mensagem do cliente, identifique uma das seguintes intenções:
         - consultar_limite
-        - agendar_pix
+        - alterar_limite
         - realizar_pix
+        - agendar_pix
+        - consultar_saldo
 
-        Mensagem: "{state.user_message}"
+        Mensagem do usuário: "{state.user_message}"
         Intenção:"""
 
     response = chat.invoke(prompt)

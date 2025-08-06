@@ -5,11 +5,11 @@ import time
 from logger import get_logger
 logger = get_logger(__name__)
 
-def get_limit(state: GraphState) -> GraphState:
-    logger.info("Node: Get Limit")
+def get_balance(state: GraphState) -> GraphState:
+    logger.info("Node: Get Balance")
     
     time.sleep(1)
     
-    state.limit.limit = 1000
+    state.balance.balance = 750
     
     return state
