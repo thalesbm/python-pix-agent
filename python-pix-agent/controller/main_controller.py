@@ -21,10 +21,10 @@ class MainController:
         fallback_graph = FallbackGraph().build()
 
         router = RunnableBranch(
-            (lambda state: state.intention == "consultar_limite", get_limite_graph),
-            (lambda state: state.intention == "alterar_limite", update_limit_graph),
-            (lambda state: state.intention == "saldo", saldo_graph),
-            (lambda state: state.intention == "pix", pix_graph),
+            (self.is_consultar_limite, get_limite_graph),
+            (self.is_alterar_limite, update_limit_graph),
+            (self.is_consultar_saldo, saldo_graph),
+            (self.is_realizar_pix, pix_graph),
             fallback_graph
         )
     
@@ -38,3 +38,19 @@ class MainController:
 
         main_graph = graph_builder.compile()
         main_graph.invoke(GraphState(user_message=message))
+
+    def is_consultar_limite(self,state):
+        print(f"Intenção detectada: {state.intention}")
+        return state.intention == "consultar_limite"
+
+    def is_alterar_limite(self, state):
+        print(f"Intenção detectada: {state.intention}")
+        return state.intention == "alterar_limite"
+
+    def is_consultar_saldo(self, state):
+        print(f"Intenção detectada: {state.intention}")
+        return state.intention == "consultar_saldo"
+
+    def is_realizar_pix(self, state):
+        print(f"Intenção detectada: {state.intention}")
+        return state.intention == "realizar_pix"

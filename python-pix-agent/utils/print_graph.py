@@ -11,7 +11,7 @@ def print_graph(graph, name: str) -> int:
     timestamp = int(datetime.now().timestamp())
 
     file_name = str(timestamp) + "_" + name + ".png"
-    with open("files/" + file_name, "wb") as f:
-        f.write(png_bytes)
+    # with open("files/" + file_name, "wb") as f:
+    #     f.write(png_bytes)
 
     return timestamp

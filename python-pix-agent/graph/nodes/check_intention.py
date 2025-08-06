@@ -21,8 +21,10 @@ def check_intention(state: GraphState) -> GraphState:
         - agendar_pix
         - consultar_saldo
 
+        Retornar apenas a intenção, sem nenhum outro texto.
+
         Mensagem do usuário: "{state.user_message}"
-        Intenção:"""
+        """
 
     response = chat.invoke(prompt)
 

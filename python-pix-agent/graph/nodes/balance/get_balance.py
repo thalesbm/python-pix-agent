@@ -12,4 +12,6 @@ def get_balance(state: GraphState) -> GraphState:
     
     state.balance.balance = 750
     
+    logger.info(f"Balance: {state.balance.balance}")
+
     return state
