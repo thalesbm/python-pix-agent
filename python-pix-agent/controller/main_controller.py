@@ -37,7 +37,9 @@ class MainController:
         graph_builder.add_edge("verificar_intencao", "router")
 
         main_graph = graph_builder.compile()
-        main_graph.invoke(GraphState(user_message=message))
+        final_state = main_graph.invoke(GraphState(user_message=message))
+
+        print(f"Saldo retornado pelo grafo: {final_state.balance.value}")
 
     def is_consultar_limite(self,state):
         print(f"Intenção detectada: {state.intention}")
