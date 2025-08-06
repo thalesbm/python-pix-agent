@@ -1,4 +1,4 @@
-from graph_state import GraphState
+from graph.graph_state import GraphState
 
 import time
 
