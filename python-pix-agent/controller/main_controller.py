@@ -53,12 +53,7 @@ class MainController:
 
         graph_builder.add_conditional_edges(
             "verificar_intencao",
-            lambda state: {
-                "consultar_limite": "consultar_limite",
-                "alterar_limite": "alterar_limite",
-                "verificar_chave_valor": "verificar_chave_valor",
-                "saldo": "saldo",
-            }.get(state.intention.strip().lower(), "mais_informacoes"),
+            self.decidir_proximo_no_default,
             {
                 "consultar_limite": "consultar_limite",
                 "alterar_limite": "alterar_limite",
@@ -70,7 +65,7 @@ class MainController:
 
         graph_builder.add_conditional_edges(
             "verificar_chave_valor",
-            self.decidir_proximo_no,
+            self.decidir_proximo_no_pix,
             {
                 "saldo": "saldo",
                 "verificar_data_pix": "verificar_data_pix",
@@ -102,8 +97,22 @@ class MainController:
 
         print_graph(graph)
 
-    def decidir_proximo_no(state: GraphState) -> str:
+    @staticmethod
+    def decidir_proximo_no_pix(state: GraphState) -> str:
         if state.intention == "realizar_pix":
             return "saldo"
         elif state.intention == "agendar_pix":
             return "verificar_data_pix"
+
+    @staticmethod
+    def decidir_proximo_no_default(state: GraphState) -> str:
+        if state.intention == "consultar_limite":
+            return "consultar_limite"
+        elif state.intention == "alterar_limite":
+            return "alterar_limite"
+        elif state.intention == "verificar_chave_valor":
+            return "verificar_chave_valor"
+        elif state.intention == "saldo":
+            return "saldo"
+        else:
+            return "mais_informacoes"
