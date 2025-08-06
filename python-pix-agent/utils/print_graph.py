@@ -1,17 +1,20 @@
 from langchain_core.runnables.graph import MermaidDrawMethod
 from datetime import datetime
+from config import get_config
 
-def print_graph(graph, name: str) -> int:
+def print_graph(graph, name: str):
     """Imprime o grafo em formato de imagem."""
 
-    png_bytes = graph.get_graph().draw_mermaid_png(
-        draw_method=MermaidDrawMethod.API
-    )
+    config = get_config()
 
-    timestamp = int(datetime.now().timestamp())
+    if config.graph.print:
 
-    file_name = str(timestamp) + "_" + name + ".png"
-    # with open("files/" + file_name, "wb") as f:
-    #     f.write(png_bytes)
+        png_bytes = graph.get_graph().draw_mermaid_png(
+            draw_method=MermaidDrawMethod.API
+        )
 
-    return timestamp
+        timestamp = int(datetime.now().timestamp())
+
+        file_name = str(timestamp) + "_" + name + ".png"
+        with open("files/" + file_name, "wb") as f:
+            f.write(png_bytes)

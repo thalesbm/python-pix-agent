@@ -6,6 +6,7 @@ from .config import get_config, Config
 from .openai_config import OpenAIConfig
 from .logging_config import LoggingConfig
 from .streamlit_config import StreamlitConfig
+from .graph_config import GraphConfig
 
 __all__ = [
     "get_config",
@@ -13,4 +14,5 @@ __all__ = [
     "OpenAIConfig", 
     "LoggingConfig",
     "StreamlitConfig",
+    "GraphConfig",
 ] 
