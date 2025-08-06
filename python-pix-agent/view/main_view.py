@@ -1,8 +1,9 @@
-from typing import List, Callable, Optional, Tuple
+from typing import Callable
 import streamlit as st
 
-from logger import get_logger
+from graph.graph_state import GraphState
 
+from logger import get_logger
 logger = get_logger(__name__)
 
 class MainView:
@@ -34,3 +35,10 @@ class MainView:
                 callback(question_input)
             else:
                 st.error("❌ Por favor, insira uma pergunta antes de enviar.")
+
+    @staticmethod
+    def update_view_with_state(state: GraphState) -> None:
+        st.subheader("Graph State:")
+        st.write(state.answer)
+        
+       

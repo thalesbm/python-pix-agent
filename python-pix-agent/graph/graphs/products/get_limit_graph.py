@@ -6,6 +6,7 @@ from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
 from graph.nodes.limits import get_limit
 from utils.print_graph import print_graph
+from graph.nodes.llm.format_answer_from_state import format_answer_from_state
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -15,24 +16,23 @@ class GetLimitGraph:
         pass
 
     def build(self):
-        logger.info("Building graph")
+        logger.info("Criando GetLimitGraph")
 
         graph_builder = StateGraph(GraphState)
 
         graph_builder.add_node("consultar_limite", RunnableLambda(get_limit))
+        graph_builder.add_node("formatar_resposta", RunnableLambda(format_answer_from_state))
         
         graph_builder.set_entry_point("consultar_limite")
-        graph_builder.add_edge("consultar_limite", END)
+        graph_builder.add_edge("consultar_limite", "formatar_resposta") 
+        graph_builder.add_edge("formatar_resposta", END) 
 
         graph = graph_builder.compile()
-        logger.info("Graph built")
+        logger.info("GetLimitGraph criado")
 
         threading.Thread(target=lambda: asyncio.run(self.print(graph))).start()
 
         return graph
 
     async def print(self, graph):
-        name = "get_limit"
-        logger.info("Printing graph: " + name)
-        print_graph(graph, name)
-        logger.info("Graph printed: " + name)
+        print_graph(graph, "get_limit")

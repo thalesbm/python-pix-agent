@@ -30,9 +30,8 @@ def init():
 
 def get_form(message: str):
     logger.info(f"Mensagem recebida: {message}")
-
-    controller = MainController()
-    controller.run(message)
+    state = MainController().run(message)
+    MainView.update_view_with_state(state)
 
 
 if __name__ == "__main__":

@@ -35,7 +35,4 @@ class UpdateLimitGraph:
         return graph
 
     async def print(self, graph):
-        name = "update_limit"
-        logger.info("Printing graph: " + name)
-        print_graph(graph, name)
-        logger.info("Graph printed: " + name)
+        print_graph(graph, "update_limit")

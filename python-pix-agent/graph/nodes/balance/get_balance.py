@@ -10,6 +10,8 @@ def get_balance(state: GraphState) -> GraphState:
     
     time.sleep(1)
     
-    state.balance.balance = 750
+    state.balance.value = 750
     
+    logger.info(f"Balance: {state.balance.value}")
+
     return state
