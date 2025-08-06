@@ -1,4 +1,4 @@
-# Python PIX Agent
+# PIX Agent
 
 Um agente inteligente para operações bancárias PIX desenvolvido em Python, utilizando LangGraph para orquestração de fluxos de trabalho e Streamlit para interface de usuário.
 
@@ -11,7 +11,7 @@ Um agente inteligente para operações bancárias PIX desenvolvido em Python, ut
 - **Agendar PIX**: Agendamento de transferências PIX
 - **Fallback**: Tratamento de intenções não reconhecidas
 
-## 🚀 Como Usar
+## Como Usar
 
 Crie um arquivo `.env` na raiz do projeto:
 ```env
@@ -27,4 +27,10 @@ pip install -r requirements.txt
 # Execute a aplicação
 python -m streamlit run python-pix-agent/app.py
 ```
----
+
+## Configurações
+
+### OpenAI
+- **Modelo**: `gpt-4o-mini`
+- **Temperatura**: `0`
+- **Tokens máximos**: `1000`

@@ -18,7 +18,7 @@ class PixGraph:
         pass
 
     def build(self):
-        logger.info("Building graph")
+        logger.info("Criando PixGraph")
 
         graph_builder = StateGraph(GraphState)
 
@@ -52,7 +52,7 @@ class PixGraph:
         graph_builder.add_edge("comprovante", END)
 
         graph = graph_builder.compile()
-        logger.info("Graph built")
+        logger.info("PixGraph criado")
 
         threading.Thread(target=lambda: asyncio.run(self.print(graph))).start()
 
@@ -66,7 +66,4 @@ class PixGraph:
             return "verificar_data_pix"
 
     async def print(self, graph):
-        name = "pix"
-        logger.info("Printing graph: " + name)
-        print_graph(graph, name)
-        logger.info("Graph printed: " + name)
+        print_graph(graph, "pix")
