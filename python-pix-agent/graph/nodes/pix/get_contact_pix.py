@@ -3,6 +3,6 @@ from graph.graph_state import GraphState
 from logger import get_logger
 logger = get_logger(__name__)
 
-def get_contact(state: GraphState) -> GraphState:
-    logger.info("Node: Get Contact")
+def get_contact_pix(state: GraphState) -> GraphState:
+    logger.info("Node: Get Contact Pix")
     return state
