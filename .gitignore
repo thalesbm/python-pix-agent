@@ -196,6 +196,7 @@ cython_debug/
 
 # Files
 files/
+.DS_Store
 
 # Cursor
 #  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
