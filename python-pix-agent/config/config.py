@@ -5,6 +5,7 @@ Configurações otimizadas para desenvolvimento.
 
 from .logging_config import LoggingConfig
 from .openai_config import OpenAIConfig
+from .streamlit_config import StreamlitConfig
 
 class Config:
     """Classe principal de configuração para desenvolvimento."""
@@ -12,6 +13,7 @@ class Config:
     def __init__(self):
         self.openai = OpenAIConfig()
         self.logging = LoggingConfig()
+        self.streamlit = StreamlitConfig()
 
 # Instância global de configuração
 config = Config()

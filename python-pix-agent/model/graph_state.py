@@ -1,5 +1,8 @@
 from pydantic import BaseModel
+from typing import List
 
 class GraphState(BaseModel):
-    input: str
-    output: str
+    user_message: str
+    intention: str = ""
+    answer: str = ""
+    receipt: str = ""
