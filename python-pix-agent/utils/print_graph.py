@@ -1,7 +1,7 @@
 from langchain_core.runnables.graph import MermaidDrawMethod
 from datetime import datetime
 
-def print_graph(graph) -> int:
+def print_graph(graph, name: str) -> int:
     """Imprime o grafo em formato de imagem."""
 
     png_bytes = graph.get_graph().draw_mermaid_png(
@@ -10,7 +10,8 @@ def print_graph(graph) -> int:
 
     timestamp = int(datetime.now().timestamp())
 
-    with open("files/" + str(timestamp) + ".png", "wb") as f:
+    file_name = str(timestamp) + "_" + name + ".png"
+    with open("files/" + file_name, "wb") as f:
         f.write(png_bytes)
 
     return timestamp
