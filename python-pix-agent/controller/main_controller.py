@@ -10,4 +10,4 @@ class MainController:
     def run(self, message: str):
         logger.info(f"Mensagem recebida na MainController: {message}")
 
-        MainGraph().build(message)
+        return MainGraph().build(message)

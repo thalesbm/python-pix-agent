@@ -18,7 +18,7 @@ class MainGraph:
     def __init__(self):
         pass
 
-    def build(self, message: str):    
+    def build(self, message: str) -> GraphState:   
         logger.info("Criando MainGraph")
         
         graph_builder = StateGraph(GraphState)
@@ -36,7 +36,7 @@ class MainGraph:
         
         final_state = GraphState(**raw_state) 
 
-        print(f"Saldo retornado pelo grafo: {final_state.balance.value}")
+        return final_state
 
     def build_router(self):
         """
