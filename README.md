@@ -1,14 +1,30 @@
-# python-pix-agent
+# Python PIX Agent
 
-## Como Usar
+Um agente inteligente para operações bancárias PIX desenvolvido em Python, utilizando LangGraph para orquestração de fluxos de trabalho e Streamlit para interface de usuário.
 
-### Execução
+### Funcionalidades Principais
+
+- **Consultar Saldo**: Verificação de saldo da conta
+- **Consultar Limite**: Verificação de limites de transação
+- **Alterar Limite**: Modificação de limites de transação
+- **Realizar PIX**: Transferências PIX imediatas
+- **Agendar PIX**: Agendamento de transferências PIX
+- **Fallback**: Tratamento de intenções não reconhecidas
+
+## 🚀 Como Usar
+
+Crie um arquivo `.env` na raiz do projeto:
+```env
+OPENAI_API_KEY=sua_chave_api_aqui
+```
+
 ```bash
-# Ative o ambiente virtual (opcional)
 python3 -m venv .venv
-source .venv/bin/activate
-pip3 install -r requirements.txt
+source .venv/bin/activate 
+
+pip install -r requirements.txt
 
 # Execute a aplicação
-python3 -m streamlit run python-pix-agent/app.py
+python -m streamlit run python-pix-agent/app.py
 ```
+---

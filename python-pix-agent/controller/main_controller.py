@@ -37,7 +37,8 @@ class MainController:
         graph_builder.add_edge("verificar_intencao", "router")
 
         main_graph = graph_builder.compile()
-        final_state = main_graph.invoke(GraphState(user_message=message))
+        raw_state = main_graph.invoke(GraphState(user_message=message))
+        final_state = GraphState(**raw_state) 
 
         print(f"Saldo retornado pelo grafo: {final_state.balance.value}")
 
