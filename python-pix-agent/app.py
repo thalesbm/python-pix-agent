@@ -14,7 +14,6 @@ def init():
     setup_logging(
         level=config.logging.level,
         format_string=config.logging.format,
-        log_file=config.logging.file_path
     )
     
     # Configura Streamlit
