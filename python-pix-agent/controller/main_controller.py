@@ -13,8 +13,7 @@ from graph.nodes.ask_more_information import ask_more_information
 from graph.nodes.check_intention import check_intention
 from graph.nodes.balance.get_balance import get_balance
 
-from utils.print_graph import print_graph   
-from typing import Literal
+from utils.print_graph import print_graph
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -72,9 +71,8 @@ class MainController:
             }
         )
 
-        graph_builder.add_edge("verificar_data_pix", "saldo")
-
         # Pix
+        graph_builder.add_edge("verificar_data_pix", "saldo")
         graph_builder.add_edge("saldo", "consultar_limite")
         graph_builder.add_edge("consultar_limite", "buscar_contato_pix")
         graph_builder.add_edge("buscar_contato_pix", "simular_pix")
