@@ -9,6 +9,7 @@ from graph.nodes.limits.update_limit import update_limit
 from graph.nodes.receipt import receipt
 from graph.nodes.llm.format_answer_from_state import format_answer_from_state
 from utils.print_graph import print_graph
+from graph.nodes.fallback import finish_simple_flow
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -26,6 +27,7 @@ class UpdateLimitGraph:
         graph_builder.add_node("atualizar_limite", RunnableLambda(update_limit))
         graph_builder.add_node("comprovante", RunnableLambda(receipt))
         graph_builder.add_node("formatar_resposta", RunnableLambda(format_answer_from_state))
+        graph_builder.add_node("encerrar_fluxo_simples", RunnableLambda(finish_simple_flow))
         
         graph_builder.set_entry_point("verificar_valor")
 
@@ -34,13 +36,15 @@ class UpdateLimitGraph:
             self.decidir_proximo_no_limit,
             {
                 "atualizar_limite": "atualizar_limite",
-                "formatar_resposta": "formatar_resposta",
+                "encerrar_fluxo_simples": "encerrar_fluxo_simples",
             }
         )
 
         graph_builder.add_edge("atualizar_limite", "comprovante")
         graph_builder.add_edge("comprovante", "formatar_resposta")
+
         graph_builder.add_edge("formatar_resposta", END)
+        graph_builder.add_edge("encerrar_fluxo_simples", END)
         
         graph = graph_builder.compile()
         logger.info("UpdateLimitGraph criado")
@@ -54,7 +58,7 @@ class UpdateLimitGraph:
         if state.limit.value:
             return "atualizar_limite"
         else:
-            return "formatar_resposta"
+            return "encerrar_fluxo_simples"
 
     async def print(self, graph):
         print_graph(graph, "update_limit")
