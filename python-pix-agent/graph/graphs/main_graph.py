@@ -18,9 +18,24 @@ class MainGraph:
     def __init__(self):
         pass
 
-    def build(self, message: str) -> GraphState:   
+    def build(self, message: str, state: GraphState = None) -> GraphState:   
         logger.info("Criando MainGraph")
         
+        if state is None:
+            state = GraphState(user_message=message)
+
+        if state.intention:
+            state = GraphState(user_message=message, intention=state.intention)
+            return self.continue_workflow(state)
+        else:
+            return self.create_workflow(state)
+
+    def continue_workflow(self, state: GraphState) -> GraphState:
+        router = self.build_router()
+        final_state = router.invoke(state)
+        return GraphState(**final_state)
+
+    def create_workflow(self, state: GraphState) -> GraphState:
         graph_builder = StateGraph(GraphState)
 
         router = self.build_router()
@@ -32,9 +47,11 @@ class MainGraph:
 
         graph_builder.add_edge("verificar_intencao", "router")
 
-        raw_state = graph_builder.compile().invoke(GraphState(user_message=message))
+        raw_state = graph_builder.compile().invoke(state)
         
         final_state = GraphState(**raw_state) 
+
+        print(f"Intenção: {final_state.intention}")
 
         logger.info("MainGraph criado")
 

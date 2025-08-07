@@ -4,6 +4,8 @@ from logger import setup_logging, get_logger
 from view.main_view import MainView
 import streamlit as st
 
+from graph.graph_state import GraphState
+
 logger = get_logger(__name__)
 
 def init():
@@ -21,8 +23,14 @@ def init():
     MainView.set_view(process_message)
 
 def process_message(message: str):
+    if "graph_state" not in st.session_state:
+        st.session_state.graph_state = GraphState(user_message=message)
+
     logger.info(f"Mensagem recebida: {message}")
-    return MainController().run(message)
+    state = MainController().run(message=message, state=st.session_state.graph_state)
+    st.session_state.graph_state = state
+
+    return state
 
 if __name__ == "__main__":
     init()
