@@ -5,4 +5,7 @@ logger = get_logger(__name__)
 
 def simulate_pix(state: GraphState) -> GraphState:
     logger.info("Node: Simulate Pix")
+
+    state.trace.append("simulate_pix")
+
     return state

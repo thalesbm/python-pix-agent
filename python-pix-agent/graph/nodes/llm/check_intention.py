@@ -29,6 +29,7 @@ def check_intention(state: GraphState) -> GraphState:
     response = chat.invoke(prompt)
 
     state.intention = response.content
+    state.trace.append("check_intention")
 
     logger.info("================================================")
     logger.info(f"Prompt: {prompt}")

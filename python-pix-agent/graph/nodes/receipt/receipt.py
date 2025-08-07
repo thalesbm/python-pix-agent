@@ -12,5 +12,6 @@ def receipt(state: GraphState) -> GraphState:
 
     # Gera o comprovante
     state.receipt.receipt_id = "1234567890"
+    state.trace.append("receipt")
 
     return state

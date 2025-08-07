@@ -15,14 +15,13 @@ class MainView:
         
         with st.container():
             with st.form(key="meu_formulario"):
-                # Campo de pergunta
+                
                 question_input: str = st.text_area(
                     "Digite sua Intenção:",
                     value="quero fazer um pix",
                     height=60,
                 )
-                
-                # Botão de envio
+
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
                     submit: bool = st.form_submit_button(
@@ -38,7 +37,8 @@ class MainView:
 
     @staticmethod
     def update_view_with_state(state: GraphState) -> None:
-        st.subheader("Graph State:")
+        st.subheader("Resposta:")
         st.write(state.answer)
-        
-       
+
+        st.subheader("Trace:")
+        st.write(state.trace)  
