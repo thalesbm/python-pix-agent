@@ -8,7 +8,6 @@ from graph.graphs import FallbackGraph
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
-from graph.nodes.fallback.fallback import fallback
 from utils.print_graph import print_graph
 
 from logger import get_logger
@@ -21,11 +20,13 @@ class MainGraph:
     def build(self, message: str, state: GraphState = None) -> GraphState:   
         logger.info("Criando MainGraph")
         
-        if state is None:
+        if state is None or "clean_state" in state.trace:
             state = GraphState(user_message=message)
 
         if state.intention:
-            state = GraphState(user_message=message, intention=state.intention)
+            state.user_message = message
+            state.intention = state.intention
+            state.trace = []
             return self.continue_workflow(state)
         else:
             return self.create_workflow(state)
@@ -50,8 +51,6 @@ class MainGraph:
         raw_state = graph_builder.compile().invoke(state)
         
         final_state = GraphState(**raw_state) 
-
-        print(f"Intenção: {final_state.intention}")
 
         logger.info("MainGraph criado")
 

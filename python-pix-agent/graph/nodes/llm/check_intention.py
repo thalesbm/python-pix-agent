@@ -18,7 +18,6 @@ def check_intention(state: GraphState) -> GraphState:
         - consultar_limite
         - alterar_limite
         - realizar_pix
-        - agendar_pix
         - consultar_saldo
 
         Retornar apenas a intenção, sem nenhum outro texto.

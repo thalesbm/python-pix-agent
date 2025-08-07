@@ -4,7 +4,7 @@ import threading
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
-from graph.nodes.fallback.fallback import fallback
+from graph.nodes.generic.fallback import fallback
 from utils.print_graph import print_graph
 
 from logger import get_logger

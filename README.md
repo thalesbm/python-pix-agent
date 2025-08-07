@@ -9,7 +9,6 @@ Um agente inteligente para operações bancárias PIX desenvolvido em Python, ut
 - **Alterar Limite**: Modificação de limites de transação
 - **Realizar PIX**: Transferências PIX imediatas
 - **Agendar PIX**: Agendamento de transferências PIX
-- **Fallback**: Tratamento de intenções não reconhecidas
 
 ## Como Usar
 

@@ -56,4 +56,5 @@ class MainView:
                     })
                     
                     st.markdown(response_content)
+                    st.markdown("Graph:")
                     st.markdown(response_details)

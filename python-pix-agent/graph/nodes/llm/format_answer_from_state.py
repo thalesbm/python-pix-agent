@@ -40,6 +40,7 @@ def get_prompt(state: GraphState) -> str:
         - Se a intenção for **consultar saldo**, responda apenas com o saldo com uma mensagem amigável.
         - Se a intenção for **consultar limite**, responda apenas com o limite com uma mensagem amigável.
         - Se a intenção for **atualizar limite**, responda apenas com o limite com uma mensagem amigável e o comprovante.
+        - Se a intenção for **realizar pix**, responda apenas com o valor e a chave pix com uma mensagem amigável de efetivação e o comprovante.
         - Formate valores como moeda brasileira (ex: R$ 100,00).
         - Se houver datas, formate como **dd/mm/aaaa**.
         - Se não houver dados disponíveis, informe que houve um erro e sugira tentar novamente.
@@ -49,6 +50,8 @@ def get_prompt(state: GraphState) -> str:
         - Saldo: {state.balance.value if state.balance and state.balance.value else 'não disponível'}
         - Limite: {state.limit.value if state.limit and state.limit.value else 'não disponível'}
         - Comprovante: {state.receipt.receipt_id if state.receipt and state.receipt.receipt_id else 'não disponível'}
+        - Chave Pix: {state.pix.key if state.pix and state.pix.key else 'não disponível'}
+        - Valor: {state.pix.value if state.pix and state.pix.value else 'não disponível'}
     """
 
     return prompt.strip()
