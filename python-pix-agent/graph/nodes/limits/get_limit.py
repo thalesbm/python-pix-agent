@@ -13,5 +13,6 @@ def get_limit(state: GraphState) -> GraphState:
     
     state.limit.value = 1000
     state.limit.last_update = datetime.now()
+    state.trace.append("get_limit")
     
     return state

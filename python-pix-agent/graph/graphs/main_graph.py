@@ -36,6 +36,8 @@ class MainGraph:
         
         final_state = GraphState(**raw_state) 
 
+        logger.info("MainGraph criado")
+
         return final_state
 
     def build_router(self):

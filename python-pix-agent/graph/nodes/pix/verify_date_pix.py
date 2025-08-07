@@ -5,4 +5,7 @@ logger = get_logger(__name__)
 
 def verify_date_pix(state: GraphState) -> GraphState:
     logger.info("Node: Verify Date Pix")
+
+    state.trace.append("verify_date_pix")
+
     return state

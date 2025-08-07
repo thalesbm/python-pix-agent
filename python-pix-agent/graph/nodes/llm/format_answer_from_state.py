@@ -27,6 +27,8 @@ def format_answer_from_state(state: GraphState) -> GraphState:
     logger.info("================================================")
 
     state.answer = response.content
+    state.trace.append("format_answer_from_state")
+
     return state
 
 def get_prompt(state: GraphState) -> str:

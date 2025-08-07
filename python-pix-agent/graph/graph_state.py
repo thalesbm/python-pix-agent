@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 from model.pix import PixModel
 from model.receipt import ReceiptModel
@@ -9,6 +10,7 @@ class GraphState(BaseModel):
     user_message: str
     intention: str = ""
     answer: str = ""
+    trace: List[str] = []
 
     limit: LimitModel = LimitModel()
     balance: BalanceModel = BalanceModel()
