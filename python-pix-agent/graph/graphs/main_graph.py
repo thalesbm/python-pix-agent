@@ -20,11 +20,10 @@ class MainGraph:
     def build(self, message: str, state: GraphState = None) -> GraphState:   
         logger.info("Criando MainGraph")
         
-        if state is None:
+        if state is None or "clean_state" in state.trace:
             state = GraphState(user_message=message)
 
         if state.intention:
-            # state = GraphState(user_message=message, intention=state.intention)
             state.user_message = message
             state.intention = state.intention
             state.trace = []
@@ -52,8 +51,6 @@ class MainGraph:
         raw_state = graph_builder.compile().invoke(state)
         
         final_state = GraphState(**raw_state) 
-
-        print(f"Intenção: {final_state.intention}")
 
         logger.info("MainGraph criado")
 

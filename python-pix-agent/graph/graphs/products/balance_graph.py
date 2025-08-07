@@ -7,6 +7,7 @@ from graph.graph_state import GraphState
 from graph.nodes.balance.get_balance import get_balance
 from utils.print_graph import print_graph
 from graph.nodes.llm.format_answer_from_state import format_answer_from_state
+from graph.nodes.generic.clean_state import clean_state
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -22,10 +23,13 @@ class BalanceGraph:
 
         graph_builder.add_node("saldo", RunnableLambda(get_balance))
         graph_builder.add_node("formatar_resposta", RunnableLambda(format_answer_from_state))
+        graph_builder.add_node("limpar_estado", RunnableLambda(clean_state))
+        
         graph_builder.set_entry_point("saldo")
         
         graph_builder.add_edge("saldo", "formatar_resposta")
-        graph_builder.add_edge("formatar_resposta", END)
+        graph_builder.add_edge("formatar_resposta", "limpar_estado")
+        graph_builder.add_edge("limpar_estado", END)
 
         graph = graph_builder.compile()
         logger.info("BalanceGraph criado")
