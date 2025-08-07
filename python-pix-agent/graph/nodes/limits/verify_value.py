@@ -10,8 +10,8 @@ import json
 from logger import get_logger
 logger = get_logger(__name__)
 
-def verify_value(state: GraphState) -> GraphState:
-    logger.info("Node: Verify Value")
+def verify_limit_value(state: GraphState) -> GraphState:
+    logger.info("Node: Verify Limit Value")
 
     api_key = Key.get_openai_key()
     openai_client = OpenAIClientFactory(api_key=api_key)
@@ -47,6 +47,4 @@ def verify_value(state: GraphState) -> GraphState:
 
     state.trace.append("verify_value")
 
-
-    
     return state

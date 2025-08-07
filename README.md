@@ -23,7 +23,7 @@ OPENAI_API_KEY=sua_chave_api_aqui
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate 
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 **Execução**

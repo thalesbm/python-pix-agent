@@ -4,11 +4,11 @@ import threading
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
-from graph.nodes.limits.verify_value import verify_value
+from graph.nodes.limits.verify_value import verify_limit_value
 from graph.nodes.limits.update_limit import update_limit
 from graph.nodes.receipt import receipt
 from graph.nodes.llm.format_answer_from_state import format_answer_from_state
-from utils.print_graph import print_graph   
+from utils.print_graph import print_graph
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -22,7 +22,7 @@ class UpdateLimitGraph:
 
         graph_builder = StateGraph(GraphState)
 
-        graph_builder.add_node("verificar_valor", RunnableLambda(verify_value))
+        graph_builder.add_node("verificar_valor", RunnableLambda(verify_limit_value))
         graph_builder.add_node("atualizar_limite", RunnableLambda(update_limit))
         graph_builder.add_node("comprovante", RunnableLambda(receipt))
         graph_builder.add_node("formatar_resposta", RunnableLambda(format_answer_from_state))
