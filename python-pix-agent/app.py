@@ -16,23 +16,13 @@ def init():
         format_string=config.logging.format,
     )
     
-    # Configura Streamlit
-    st.set_page_config(
-        page_title=config.streamlit.page_title,
-        page_icon=config.streamlit.page_icon,
-        layout=config.streamlit.layout,
-        initial_sidebar_state=config.streamlit.initial_sidebar_state
-    )
-    
     logger.info("Bem vindo ao melhor mini agente do mundo")
 
-    MainView.set_view(get_form)
+    MainView.set_view(process_message)
 
-def get_form(message: str):
+def process_message(message: str):
     logger.info(f"Mensagem recebida: {message}")
-    state = MainController().run(message)
-    MainView.update_view_with_state(state)
-
+    return MainController().run(message)
 
 if __name__ == "__main__":
     init()

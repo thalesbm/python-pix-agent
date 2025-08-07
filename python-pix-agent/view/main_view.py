@@ -1,5 +1,6 @@
 from typing import Callable
 import streamlit as st
+from datetime import datetime
 
 from graph.graph_state import GraphState
 
@@ -7,38 +8,52 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 class MainView:
-    """Classe responsável pela interface de usuário usando Streamlit."""
+    """Classe responsável pela interface de usuário usando Streamlit com modelo de chat."""
 
     @staticmethod
-    def set_view(callback: Callable[[str], None]) -> None:
-        logger.info("Configurando View")
+    def set_view(callback: Callable[[str], GraphState]) -> None:
+        logger.info("Configurando View de Chat")
         
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
+
+        st.set_page_config(
+            page_title="PIX Agent - Chat",
+            page_icon="💬",
+            layout="wide"
+        )
+
         with st.container():
-            with st.form(key="meu_formulario"):
-                
-                question_input: str = st.text_area(
-                    "Digite sua Intenção:",
-                    value="quero fazer um pix",
-                    height=60,
-                )
-
-                col1, col2, col3 = st.columns([1, 2, 1])
-                with col1:
-                    submit: bool = st.form_submit_button(
-                        "Enviar Intenção",
-                        use_container_width=True
-                    )
-
-        if submit:
-            if question_input and question_input.strip():
-                callback(question_input)
-            else:
-                st.error("❌ Por favor, insira uma pergunta antes de enviar.")
-
-    @staticmethod
-    def update_view_with_state(state: GraphState) -> None:
-        st.subheader("Resposta:")
-        st.write(state.answer)
-
-        st.subheader("Trace:")
-        st.write(state.trace)  
+            for message in st.session_state.messages:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+                    
+                    if "details" in message and message["details"]:
+                        st.markdown(message["details"])
+                    
+        if prompt := st.chat_input("Digite sua mensagem aqui..."):
+            st.session_state.messages.append({
+                "role": "user", 
+                "content": prompt,
+                "timestamp": datetime.now()
+            })
+            
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            
+            with st.chat_message("assistant"):
+                with st.spinner("Processando sua solicitação..."):
+                    state = callback(prompt)
+                    
+                    response_content = state.answer
+                    response_details = state.trace
+                    
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": response_content,
+                        "details": response_details,
+                        "timestamp": datetime.now()
+                    })
+                    
+                    st.markdown(response_content)
+                    st.markdown(response_details)

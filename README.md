@@ -13,19 +13,23 @@ Um agente inteligente para operações bancárias PIX desenvolvido em Python, ut
 
 ## Como Usar
 
+**Configure as variáveis de ambiente**
 Crie um arquivo `.env` na raiz do projeto:
 ```env
 OPENAI_API_KEY=sua_chave_api_aqui
 ```
 
+**Instale as dependências**
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate 
+pip3 install -r requirements.txt
+```
 
-pip install -r requirements.txt
-
+**Execução**
+```bash
 # Execute a aplicação
-python -m streamlit run python-pix-agent/app.py
+python3 -m streamlit run python-pix-agent/app.py
 ```
 
 ## Configurações
