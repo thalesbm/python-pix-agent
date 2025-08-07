@@ -54,7 +54,7 @@ class UpdateLimitGraph:
 
     @staticmethod
     def decidir_proximo_no_limit(state: GraphState) -> str:
-        if state.limit.value:
+        if state.limit.has_limit:
             return "atualizar_limite"
         else:
             return "encerrar_fluxo_simples"

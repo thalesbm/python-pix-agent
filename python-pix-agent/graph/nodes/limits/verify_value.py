@@ -41,8 +41,10 @@ def verify_limit_value(state: GraphState) -> GraphState:
     if result["tem_valor"] is True:
         state.limit.value = result["valor"]
         state.limit.last_update = datetime.now()
+        state.limit.has_limit = True
     else: 
         state.limit.value = None
+        state.limit.has_limit = False
         state.answer = result["resposta"]
 
     state.trace.append("verify_value")
