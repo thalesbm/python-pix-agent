@@ -42,7 +42,6 @@ class UpdateLimitGraph:
 
         graph_builder.add_edge("atualizar_limite", "comprovante")
         graph_builder.add_edge("comprovante", "formatar_resposta")
-
         graph_builder.add_edge("formatar_resposta", END)
         graph_builder.add_edge("encerrar_fluxo_simples", END)
         
