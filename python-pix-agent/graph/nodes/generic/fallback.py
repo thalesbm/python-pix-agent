@@ -10,9 +10,8 @@ class FallbackNodeStrategy(GraphStrategyInterface):
         """
         Fallback do grafo.
         """
+        super().build(state) 
 
         logger.info("Node: Fallback")
-
-        state.trace.append("fallback")
 
         return state

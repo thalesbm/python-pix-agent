@@ -13,6 +13,7 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
         """
         Verifica a intenção do cliente.
         """
+        super().build(state) 
 
         logger.info(f"Recebendo o estado: {state}")
 
@@ -35,7 +36,6 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
         response = chat.invoke(prompt)
 
         state.intention = response.content
-        state.trace.append("check_intention")
 
         logger.info("================================================")
         logger.info(f"Prompt: {prompt}")

@@ -10,12 +10,10 @@ class ReceiptNodeStrategy(GraphStrategyInterface):
         """
         Gera um comprovante para a transação.
         """
+        super().build(state) 
 
         logger.info("Node: Receipt iniciado")
 
         state.receipt.receipt_id = "1234567890"
-        state.trace.append("receipt")
-
-        logger.info("Node: Receipt finalizado")
 
         return state

@@ -10,9 +10,8 @@ class UpdateLimitNodeStrategy(GraphStrategyInterface):
         """
         Atualiza o limite do cliente.
         """
+        super().build(state) 
 
         logger.info("Node: Update Limit")
-
-        state.trace.append("update_limit")
         
         return state

@@ -17,6 +17,7 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
         """
         Verifica se o cliente mencionou um valor monetário para atualizar o limite.
         """
+        super().build(state) 
 
         logger.info("Node: Verify Limit Value")
 
@@ -53,7 +54,5 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
             state.limit.value = None
             state.limit.has_limit = False
             state.answer = result["resposta"]
-
-        state.trace.append("verify_value")
 
         return state

@@ -10,9 +10,8 @@ class VerifyDatePixNodeStrategy(GraphStrategyInterface):
         """
         Verifica se a data da transação Pix é válida.
         """
+        super().build(state) 
 
         logger.info("Node: Verify Date Pix")
-
-        state.trace.append("verify_date_pix")
 
         return state

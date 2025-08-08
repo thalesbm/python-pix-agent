@@ -10,9 +10,8 @@ class CleanStateNodeStrategy(GraphStrategyInterface):
         """
         Limpa o estado do grafo.
         """
+        super().build(state) 
 
-        logger.info("Node: CleanState")
-
-        state.trace.append("clean_state")
+        logger.info("Node: CleanState") 
 
         return state

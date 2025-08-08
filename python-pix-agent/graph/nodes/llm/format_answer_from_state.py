@@ -15,8 +15,9 @@ class FormatAnswerFromStateNodeStrategy(GraphStrategyInterface):
         """
         Formata a mensagem para o formato de entrada do modelo.
         """
+        super().build(state) 
 
-        logger.info("Iniciando processo de formatar resposta...")
+        logger.info("Node: Format Answer From State")
 
         api_key = Key.get_openai_key()
         openai_client = OpenAIClientFactory(api_key=api_key)
@@ -26,11 +27,10 @@ class FormatAnswerFromStateNodeStrategy(GraphStrategyInterface):
         response = chat.invoke(prompt)
 
         logger.info("================================================")
-        logger.info("Resposta final:", response.content)
+        logger.info(f"Resposta final: {response.content}")
         logger.info("================================================")
 
         state.answer = response.content
-        state.trace.append("format_answer_from_state")
 
         return state
 

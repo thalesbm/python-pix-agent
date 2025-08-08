@@ -10,11 +10,11 @@ class GetBalanceNodeStrategy(GraphStrategyInterface):
         """
         Obtém o saldo do cliente.
         """
+        super().build(state) 
 
         logger.info("Node: Get Balance")
 
-        state.balance.value = 750
-        state.trace.append("get_balance")
+        state.balance.value = 750 
         
         logger.info(f"Balance: {state.balance.value}")
 

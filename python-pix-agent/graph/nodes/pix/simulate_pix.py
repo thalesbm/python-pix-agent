@@ -10,9 +10,8 @@ class SimulatePixNodeStrategy(GraphStrategyInterface):
         """
         Simula a transação Pix.
         """
+        super().build(state) 
 
         logger.info("Node: Simulate Pix")
-
-        state.trace.append("simulate_pix")
 
         return state

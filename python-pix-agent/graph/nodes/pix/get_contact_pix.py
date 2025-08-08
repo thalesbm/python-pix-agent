@@ -10,9 +10,8 @@ class GetContactPixNodeStrategy(GraphStrategyInterface):
         """
         Obtém o contato do cliente.
         """
+        super().build(state) 
 
         logger.info("Node: Get Contact Pix")
-
-        state.trace.append("get_contact_pix")
 
         return state

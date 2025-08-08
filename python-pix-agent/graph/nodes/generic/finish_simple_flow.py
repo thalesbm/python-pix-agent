@@ -10,9 +10,8 @@ class FinishSimpleFlowNodeStrategy(GraphStrategyInterface):
         """
         Finaliza o fluxo simples.
         """
+        super().build(state) 
 
         logger.info("Node: Finish Simple Flow")
-
-        state.trace.append("finish_simple_flow")
 
         return state

@@ -14,7 +14,7 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
         """
         Verifica se o cliente mencionou um valor ou chave Pix.
         """
-
+        super().build(state) 
         logger.info("Node: Check Value Key")
 
         api_key = Key.get_openai_key()
@@ -72,7 +72,5 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
             state.pix.has_key = True
         
         state.answer = result["resposta"]
-
-        state.trace.append("check_value_key")
 
         return state

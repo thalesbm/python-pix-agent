@@ -10,9 +10,8 @@ class EffectivePixNodeStrategy(GraphStrategyInterface):
         """
         Efetiva a transação Pix.
         """
+        super().build(state) 
 
         logger.info("Node: Effective Pix")
-
-        state.trace.append("effective_pix")
 
         return state
