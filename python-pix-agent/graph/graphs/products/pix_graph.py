@@ -4,14 +4,19 @@ import threading
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
-from graph.nodes.pix import check_value_key, simulate_pix, effective_pix, get_contact_pix, verify_date_pix
-from graph.nodes.limits import get_limit
-from graph.nodes.balance.get_balance import get_balance
+from graph.nodes.pix.check_value_key import CheckValueKeyNodeStrategy
+from graph.nodes.pix.simulate_pix import SimulatePixNodeStrategy
+from graph.nodes.pix.effective_pix import EffectivePixNodeStrategy
+from graph.nodes.pix.get_contact_pix import GetContactPixNodeStrategy
+from graph.nodes.pix.verify_date_pix import VerifyDatePixNodeStrategy
+from graph.nodes.limits.get_limit import GetLimitNodeStrategy
+from graph.nodes.balance.get_balance import GetBalanceNodeStrategy
+from graph.nodes.receipt.receipt import ReceiptNodeStrategy
+from graph.nodes.generic.finish_simple_flow import FinishSimpleFlowNodeStrategy
+from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
+from graph.nodes.generic.clean_state import CleanStateNodeStrategy
+
 from utils.print_graph import print_graph
-from graph.nodes.receipt import receipt
-from graph.nodes.generic.finish_simple_flow import finish_simple_flow 
-from graph.nodes.llm.format_answer_from_state import format_answer_from_state
-from graph.nodes.generic.clean_state import clean_state
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -25,17 +30,17 @@ class PixGraph:
 
         graph_builder = StateGraph(GraphState)
 
-        graph_builder.add_node("verificar_chave_valor", RunnableLambda(check_value_key))
-        graph_builder.add_node("simular_pix", RunnableLambda(simulate_pix))
-        graph_builder.add_node("efetivar_pix", RunnableLambda(effective_pix))
-        graph_builder.add_node("buscar_contato_pix", RunnableLambda(get_contact_pix))
-        graph_builder.add_node("verificar_data_pix", RunnableLambda(verify_date_pix))
-        graph_builder.add_node("consultar_limite", RunnableLambda(get_limit))
-        graph_builder.add_node("saldo", RunnableLambda(get_balance))
-        graph_builder.add_node("comprovante", RunnableLambda(receipt))
-        graph_builder.add_node("encerrar_fluxo_simples", RunnableLambda(finish_simple_flow))
-        graph_builder.add_node("formatar_resposta", RunnableLambda(format_answer_from_state))
-        graph_builder.add_node("limpar_estado", RunnableLambda(clean_state))
+        graph_builder.add_node("verificar_chave_valor", RunnableLambda(CheckValueKeyNodeStrategy().build))
+        graph_builder.add_node("simular_pix", RunnableLambda(SimulatePixNodeStrategy().build))
+        graph_builder.add_node("efetivar_pix", RunnableLambda(EffectivePixNodeStrategy().build))
+        graph_builder.add_node("buscar_contato_pix", RunnableLambda(GetContactPixNodeStrategy().build))
+        graph_builder.add_node("verificar_data_pix", RunnableLambda(VerifyDatePixNodeStrategy().build))
+        graph_builder.add_node("consultar_limite", RunnableLambda(GetLimitNodeStrategy().build))
+        graph_builder.add_node("saldo", RunnableLambda(GetBalanceNodeStrategy().build))
+        graph_builder.add_node("comprovante", RunnableLambda(ReceiptNodeStrategy().build))
+        graph_builder.add_node("encerrar_fluxo_simples", RunnableLambda(FinishSimpleFlowNodeStrategy().build))
+        graph_builder.add_node("formatar_resposta", RunnableLambda(FormatAnswerFromStateNodeStrategy().build))
+        graph_builder.add_node("limpar_estado", RunnableLambda(CleanStateNodeStrategy().build))
 
         graph_builder.set_entry_point("verificar_chave_valor")
 

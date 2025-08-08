@@ -1,14 +1,21 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def get_balance(state: GraphState) -> GraphState:
-    logger.info("Node: Get Balance")
-
-    state.balance.value = 750
-    state.trace.append("get_balance")
+class GetBalanceNodeStrategy(GraphStrategyInterface):
     
-    logger.info(f"Balance: {state.balance.value}")
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Obtém o saldo do cliente.
+        """
 
-    return state
+        logger.info("Node: Get Balance")
+
+        state.balance.value = 750
+        state.trace.append("get_balance")
+        
+        logger.info(f"Balance: {state.balance.value}")
+
+        return state

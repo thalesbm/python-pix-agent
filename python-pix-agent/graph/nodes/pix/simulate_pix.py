@@ -1,11 +1,18 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def simulate_pix(state: GraphState) -> GraphState:
-    logger.info("Node: Simulate Pix")
+class SimulatePixNodeStrategy(GraphStrategyInterface):
+    
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Simula a transação Pix.
+        """
 
-    state.trace.append("simulate_pix")
+        logger.info("Node: Simulate Pix")
 
-    return state
+        state.trace.append("simulate_pix")
+
+        return state

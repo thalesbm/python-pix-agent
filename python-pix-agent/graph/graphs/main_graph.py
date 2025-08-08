@@ -1,7 +1,7 @@
 from graph.graph_state import GraphState
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda, RunnableBranch
-from graph.nodes.llm.check_intention import check_intention
+from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.graphs.products import BalanceGraph, GetLimitGraph, UpdateLimitGraph, PixGraph
 from graph.graphs import FallbackGraph
 
@@ -41,7 +41,7 @@ class MainGraph:
 
         router = self.build_router()
         
-        graph_builder.add_node("verificar_intencao", RunnableLambda(check_intention))
+        graph_builder.add_node("verificar_intencao", RunnableLambda(CheckIntentionNodeStrategy().build))
         graph_builder.add_node("router", router)
 
         graph_builder.set_entry_point("verificar_intencao")

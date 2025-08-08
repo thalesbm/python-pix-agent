@@ -1,11 +1,18 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def fallback(state: GraphState) -> GraphState:
-    logger.info("Node: Fallback")
+class FallbackNodeStrategy(GraphStrategyInterface):
+    
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Fallback do grafo.
+        """
 
-    state.trace.append("fallback")
+        logger.info("Node: Fallback")
 
-    return state
+        state.trace.append("fallback")
+
+        return state

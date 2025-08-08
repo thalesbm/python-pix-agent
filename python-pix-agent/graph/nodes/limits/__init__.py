@@ -2,10 +2,12 @@
 Graph Nos - Nodes do grafo do produto de limite.
 """
 
-from .get_limit import get_limit
-from .update_limit import update_limit
+from .get_limit import GetLimitNodeStrategy
+from .update_limit import UpdateLimitNodeStrategy
+from .verify_value import VerifyLimitValueNodeStrategy
 
 __all__ = [
-    "get_limit",
-    "update_limit",
+    "GetLimitNodeStrategy",
+    "UpdateLimitNodeStrategy",
+    "VerifyLimitValueNodeStrategy",
 ] 

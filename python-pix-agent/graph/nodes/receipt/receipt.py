@@ -1,14 +1,21 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def receipt(state: GraphState) -> GraphState:
-    logger.info("Node: Receipt iniciado")
+class ReceiptNodeStrategy(GraphStrategyInterface):
+    
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Gera um comprovante para a transação.
+        """
 
-    state.receipt.receipt_id = "1234567890"
-    state.trace.append("receipt")
+        logger.info("Node: Receipt iniciado")
 
-    logger.info("Node: Receipt finalizado")
+        state.receipt.receipt_id = "1234567890"
+        state.trace.append("receipt")
 
-    return state
+        logger.info("Node: Receipt finalizado")
+
+        return state
