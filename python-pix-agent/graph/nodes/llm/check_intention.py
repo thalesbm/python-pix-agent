@@ -1,6 +1,5 @@
 from graph.graph_state import GraphState
 from infra.openai_client import OpenAIClientFactory
-from pipeline.openai import Key
 from langchain_openai.chat_models import ChatOpenAI
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
@@ -17,9 +16,7 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
 
         logger.info(f"Recebendo o estado: {state}")
 
-        api_key = Key.get_openai_key()
-        openai_client = OpenAIClientFactory(api_key=api_key)
-        chat: ChatOpenAI = openai_client.create_basic_client()
+        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
 
         prompt = self.get_prompt(state)
 

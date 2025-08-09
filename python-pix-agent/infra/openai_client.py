@@ -1,11 +1,12 @@
 from langchain_openai.chat_models import ChatOpenAI
 from config.config import get_config
+from infra.key import Key
 
 class OpenAIClientFactory:
     """Factory para criar clientes OpenAI com diferentes configurações."""
     
     def __init__(self, api_key: str, model: str = None):
-        self.api_key = api_key
+        self.api_key = Key.get_openai_key()
         self.config = get_config()
         self.model = model or self.config.openai.model
 
