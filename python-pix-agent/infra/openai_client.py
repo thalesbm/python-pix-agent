@@ -1,6 +1,6 @@
 from langchain_openai.chat_models import ChatOpenAI
 from config.config import get_config
-from infra.key import Key
+from pipeline.openai import Key
 
 class OpenAIClientFactory:
     """Factory para criar clientes OpenAI com diferentes configurações."""
