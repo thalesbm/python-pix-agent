@@ -21,17 +21,7 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
         openai_client = OpenAIClientFactory(api_key=api_key)
         chat: ChatOpenAI = openai_client.create_basic_client()
 
-        prompt = f"""
-            A partir da mensagem do cliente, identifique uma das seguintes intenções:
-            - consultar_limite
-            - alterar_limite
-            - realizar_pix
-            - consultar_saldo
-
-            Retornar apenas a intenção, sem nenhum outro texto.
-
-            Mensagem do usuário: "{state.user_message}"
-            """
+        prompt = self.get_prompt(state)
 
         response = chat.invoke(prompt)
 
@@ -44,3 +34,18 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
         logger.info("================================================")
 
         return state
+
+    def get_prompt(self, state: GraphState) -> str:
+        prompt = f"""
+            A partir da mensagem do cliente, identifique uma das seguintes intenções:
+            - consultar_limite
+            - alterar_limite
+            - realizar_pix
+            - consultar_saldo
+
+            Retornar apenas a intenção, sem nenhum outro texto.
+
+            Mensagem do usuário: "{state.user_message}"
+            """
+
+        return prompt.strip()

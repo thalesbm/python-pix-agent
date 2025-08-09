@@ -21,6 +21,28 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
         openai_client = OpenAIClientFactory(api_key=api_key)
         chat: ChatOpenAI = openai_client.create_basic_client()
 
+        prompt = self.get_prompt(state)
+
+        response = chat.invoke(prompt)
+        result = json.loads(response.content)
+
+        logger.info("================================================")
+        logger.info(f"Resposta: {response.content}")
+        logger.info("================================================")
+
+        if result["tem_valor"]:
+            state.pix.value = result["valor"]
+            state.pix.has_value = True
+        
+        if result["tem_chave"]:
+            state.pix.key = result["chave"]
+            state.pix.has_key = True
+        
+        state.answer = result["resposta"]
+
+        return state
+
+    def get_prompt(self, state: GraphState) -> str:
         prompt = f"""
             Você é um assistente bancário. Seu objetivo é analisar a mensagem do cliente e identificar se ela contém:
 
@@ -56,21 +78,4 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
             Mensagem do cliente: "{state.user_message}"
         """
 
-        response = chat.invoke(prompt)
-        result = json.loads(response.content)
-
-        logger.info("================================================")
-        logger.info(f"Resposta: {response.content}")
-        logger.info("================================================")
-
-        if result["tem_valor"]:
-            state.pix.value = result["valor"]
-            state.pix.has_value = True
-        
-        if result["tem_chave"]:
-            state.pix.key = result["chave"]
-            state.pix.has_key = True
-        
-        state.answer = result["resposta"]
-
-        return state
+        return prompt.strip()

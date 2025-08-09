@@ -9,6 +9,7 @@ load_dotenv()
 class Key:
     """Classe responsável por gerenciar a chave da API OpenAI."""
 
+    @staticmethod
     def get_openai_key() -> str:
         api_key = os.getenv("OPENAI_API_KEY")
 

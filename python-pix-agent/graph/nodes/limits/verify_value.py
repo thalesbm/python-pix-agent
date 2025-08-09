@@ -25,19 +25,7 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
         openai_client = OpenAIClientFactory(api_key=api_key)
         chat: ChatOpenAI = openai_client.create_basic_client()
 
-        prompt = f"""
-            Você é um assistente de atendimento bancário.
-            
-            1. Se houver um valor monetário mencionado (por exemplo: "500", "R$ 2.000", "mil reais", "dois mil"), extraia apenas o valor em formato numérico, sem símbolos ou texto.
-                Retorne no formato JSON:
-                {{"tem_valor": true, "valor": 2000}}
-
-            2. Se não houver valor explícito, retorne uma resposta natural e breve pedindo ao cliente que informe o valor desejado para atualizar o limite.  
-                Retorne no formato JSON:
-                {{"tem_valor": false, "resposta": "Claro! Qual valor você quer definir como novo limite?"}}
-
-            Mensagem do cliente: "{state.user_message}"
-        """
+        prompt = self.get_prompt(state)
 
         response = chat.invoke(prompt)
         result = json.loads(response.content)
@@ -56,3 +44,20 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
             state.answer = result["resposta"]
 
         return state
+
+    def get_prompt(self, state: GraphState) -> str:
+        prompt = f"""
+            Você é um assistente de atendimento bancário.
+            
+            1. Se houver um valor monetário mencionado (por exemplo: "500", "R$ 2.000", "mil reais", "dois mil"), extraia apenas o valor em formato numérico, sem símbolos ou texto.
+                Retorne no formato JSON:
+                {{"tem_valor": true, "valor": 2000}}
+
+            2. Se não houver valor explícito, retorne uma resposta natural e breve pedindo ao cliente que informe o valor desejado para atualizar o limite.  
+                Retorne no formato JSON:
+                {{"tem_valor": false, "resposta": "Claro! Qual valor você quer definir como novo limite?"}}
+
+            Mensagem do cliente: "{state.user_message}"
+        """
+
+        return prompt.strip()
