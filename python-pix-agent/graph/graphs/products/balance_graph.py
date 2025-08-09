@@ -17,7 +17,10 @@ class BalanceGraph:
     def __init__(self):
         pass
 
-    def build(self):    
+    def build(self):
+        """
+        Cria o workflow de saldo do grafo.
+        """
         logger.info("Criando BalanceGraph")
         
         graph_builder = StateGraph(GraphState)

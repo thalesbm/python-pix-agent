@@ -26,6 +26,9 @@ class PixGraph:
         pass
 
     def build(self):
+        """
+        Cria o workflow de pix do grafo.
+        """
         logger.info("Criando PixGraph")
 
         graph_builder = StateGraph(GraphState)

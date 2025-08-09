@@ -11,6 +11,9 @@ class Key:
 
     @staticmethod
     def get_openai_key() -> str:
+        """
+        Obtém a chave da API OpenAI.
+        """
         api_key = os.getenv("OPENAI_API_KEY")
 
         if api_key:
@@ -19,4 +22,3 @@ class Key:
             logger.warning("OpenAI API key não foi encontrada!")
 
         return api_key
-

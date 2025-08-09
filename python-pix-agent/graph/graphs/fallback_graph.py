@@ -14,7 +14,10 @@ class FallbackGraph:
     def __init__(self):
         pass
 
-    def build(self):    
+    def build(self):
+        """
+        Cria o workflow de fallback do grafo.
+        """
         logger.info("Criando FallbackGraph")
         
         graph_builder = StateGraph(GraphState)

@@ -11,6 +11,9 @@ def print_graph(graph, name: str):
     config = get_config()
 
     if config.graph.print:
+        """
+        Imprime o grafo em formato de imagem.
+        """
         logger.info("Imprimindo grafo")
 
         png_bytes = graph.get_graph().draw_mermaid_png(

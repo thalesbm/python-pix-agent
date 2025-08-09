@@ -18,6 +18,9 @@ class GetLimitGraph:
         pass
 
     def build(self):
+        """
+        Cria o workflow de limite do grafo.
+        """
         logger.info("Criando GetLimitGraph")
 
         graph_builder = StateGraph(GraphState)

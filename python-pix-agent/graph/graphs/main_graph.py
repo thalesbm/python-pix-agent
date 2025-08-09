@@ -14,7 +14,10 @@ class MainGraph:
     def __init__(self):
         pass
 
-    def build(self, message: str, state: GraphState = None) -> GraphState:   
+    def build(self, message: str, state: GraphState = None) -> GraphState:
+        """
+        Gerencia o workflow do grafo.
+        """
         logger.info("Criando MainGraph")
         
         if state is None or "clean_state" in state.trace:
@@ -29,11 +32,17 @@ class MainGraph:
             return self.create_workflow(state)
 
     def continue_workflow(self, state: GraphState) -> GraphState:
+        """
+        Continua o workflow principal do grafo.
+        """
         router = self.build_router()
         final_state = router.invoke(state)
         return GraphState(**final_state)
 
     def create_workflow(self, state: GraphState) -> GraphState:
+        """
+        Cria o workflow principal do grafo.
+        """
         graph_builder = StateGraph(GraphState)
 
         router = self.build_router()

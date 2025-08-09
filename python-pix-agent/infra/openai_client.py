@@ -10,6 +10,9 @@ class OpenAIClientFactory:
         self.model = model or self.config.openai.model
 
     def create_basic_client(self) -> ChatOpenAI:
+        """
+        Cria um cliente OpenAI com configurações básicas.
+        """
         return ChatOpenAI(
             model=self.model,
             api_key=self.api_key,

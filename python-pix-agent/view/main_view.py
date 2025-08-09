@@ -12,6 +12,9 @@ class MainView:
 
     @staticmethod
     def set_view(callback: Callable[[str], GraphState]) -> None:
+        """
+        Configura a view de chat.
+        """
         logger.info("Configurando View de Chat")
         
         if "messages" not in st.session_state:

@@ -23,6 +23,9 @@ def init():
     MainView.set_view(process_message)
 
 def process_message(message: str):
+    """
+    Processa a mensagem recebida.
+    """
     if "graph_state" not in st.session_state:
         st.session_state.graph_state = GraphState(user_message=message)
 

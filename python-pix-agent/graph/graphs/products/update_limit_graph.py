@@ -21,6 +21,9 @@ class UpdateLimitGraph:
         pass
 
     def build(self):
+        """
+        Cria o workflow de atualizar limite do grafo.
+        """
         logger.info("Criando UpdateLimitGraph")
 
         graph_builder = StateGraph(GraphState)

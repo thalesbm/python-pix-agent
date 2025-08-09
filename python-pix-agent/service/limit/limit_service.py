@@ -11,6 +11,9 @@ class LimitService:
         self.limit = limit
 
     def get(self) -> LimitModel:
+        """
+        Obtém o limite atual.
+        """
         
         limit = LimitModel()
         limit.value = 1000
