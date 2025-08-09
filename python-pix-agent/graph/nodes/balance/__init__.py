@@ -2,8 +2,8 @@
 Graph Nos - Nodes do grafo do produto de limite.
 """
 
-from .get_balance import get_balance
+from .get_balance import GetBalanceNodeStrategy
 
 __all__ = [
-    "get_balance",
+    "GetBalanceNodeStrategy",
 ] 

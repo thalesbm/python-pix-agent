@@ -1,13 +1,10 @@
 from graph.graph_state import GraphState
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda, RunnableBranch
-from graph.nodes.llm.check_intention import check_intention
+from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.graphs.products import BalanceGraph, GetLimitGraph, UpdateLimitGraph, PixGraph
 from graph.graphs import FallbackGraph
 
-from langgraph.graph import StateGraph, END
-from langchain_core.runnables import RunnableLambda
-from graph.graph_state import GraphState
 from utils.print_graph import print_graph
 
 from logger import get_logger
@@ -17,7 +14,10 @@ class MainGraph:
     def __init__(self):
         pass
 
-    def build(self, message: str, state: GraphState = None) -> GraphState:   
+    def build(self, message: str, state: GraphState = None) -> GraphState:
+        """
+        Gerencia o workflow do grafo.
+        """
         logger.info("Criando MainGraph")
         
         if state is None or "clean_state" in state.trace:
@@ -32,16 +32,22 @@ class MainGraph:
             return self.create_workflow(state)
 
     def continue_workflow(self, state: GraphState) -> GraphState:
+        """
+        Continua o workflow principal do grafo.
+        """
         router = self.build_router()
         final_state = router.invoke(state)
         return GraphState(**final_state)
 
     def create_workflow(self, state: GraphState) -> GraphState:
+        """
+        Cria o workflow principal do grafo.
+        """
         graph_builder = StateGraph(GraphState)
 
         router = self.build_router()
         
-        graph_builder.add_node("verificar_intencao", RunnableLambda(check_intention))
+        graph_builder.add_node("verificar_intencao", RunnableLambda(CheckIntentionNodeStrategy().build))
         graph_builder.add_node("router", router)
 
         graph_builder.set_entry_point("verificar_intencao")

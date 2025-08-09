@@ -6,7 +6,9 @@ Fornece configuração unificada e utilitários de logging.
 import logging
 
 class LoggerConfig:
-    """Configuração centralizada de logging."""
+    """
+    Configuração centralizada de logging.
+    """
     
     # Configurações padrão
     DEFAULT_LEVEL = "INFO"
@@ -26,6 +28,9 @@ class LoggerConfig:
         format_string: str = None,
         console_output: bool = True,
     ):
+        """
+        Configura o logging.
+        """
         if self._configured:
             return
         
@@ -60,6 +65,9 @@ class LoggerConfig:
         logger.info(f"Logging configurado - Nível: {level}, Console: {console_output}")
     
     def get_logger(self, name: str) -> logging.Logger:
+        """
+        Obtém o logger.
+        """
         if name in self._loggers:
             return self._loggers[name]
         
@@ -68,6 +76,9 @@ class LoggerConfig:
         return logger
     
     def set_level(self, level: str):
+        """
+        Define o nível de logging.
+        """
         logging.getLogger().setLevel(getattr(logging, level.upper()))
         
         # Atualiza todos os loggers registrados

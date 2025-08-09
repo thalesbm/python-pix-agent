@@ -1,11 +1,17 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def effective_pix(state: GraphState) -> GraphState:
-    logger.info("Node: Effective Pix")
+class EffectivePixNodeStrategy(GraphStrategyInterface):
+    
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Efetiva a transação Pix.
+        """
+        super().build(state) 
 
-    state.trace.append("effective_pix")
+        logger.info("Node: Effective Pix")
 
-    return state
+        return state

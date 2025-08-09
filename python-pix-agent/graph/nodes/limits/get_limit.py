@@ -1,15 +1,22 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
-from datetime import datetime
+from service.limit.limit_service import LimitService
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def get_limit(state: GraphState) -> GraphState:
-    logger.info("Node: Get Limit")
-
-    state.limit.value = 1000
-    state.limit.last_update = datetime.now()
-    state.trace.append("get_limit")
+class GetLimitNodeStrategy(GraphStrategyInterface):
     
-    return state
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Obtém o limite do cliente.
+        """
+        super().build(state) 
+
+        logger.info("Node: Get Limit")
+
+        limit_service = LimitService()
+        state.limit = limit_service.get()
+        
+        return state

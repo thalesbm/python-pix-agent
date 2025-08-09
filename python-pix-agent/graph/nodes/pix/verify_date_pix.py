@@ -1,11 +1,17 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def verify_date_pix(state: GraphState) -> GraphState:
-    logger.info("Node: Verify Date Pix")
+class VerifyDatePixNodeStrategy(GraphStrategyInterface):
+    
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Verifica se a data da transação Pix é válida.
+        """
+        super().build(state) 
 
-    state.trace.append("verify_date_pix")
+        logger.info("Node: Verify Date Pix")
 
-    return state
+        return state

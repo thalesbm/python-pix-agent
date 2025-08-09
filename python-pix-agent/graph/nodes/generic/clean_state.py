@@ -1,11 +1,17 @@
 from graph.graph_state import GraphState
+from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-def clean_state(state: GraphState) -> GraphState:
-    logger.info("Node: CleanState")
+class CleanStateNodeStrategy(GraphStrategyInterface):
+    
+    def build(self, state: GraphState) -> GraphState:
+        """
+        Limpa o estado do grafo.
+        """
+        super().build(state) 
 
-    state.trace.append("clean_state")
+        logger.info("Node: CleanState") 
 
-    return state
+        return state

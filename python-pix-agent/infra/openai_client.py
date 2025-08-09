@@ -10,17 +10,12 @@ class OpenAIClientFactory:
         self.model = model or self.config.openai.model
 
     def create_basic_client(self) -> ChatOpenAI:
+        """
+        Cria um cliente OpenAI com configurações básicas.
+        """
         return ChatOpenAI(
             model=self.model,
             api_key=self.api_key,
             temperature=self.config.openai.temperature,
             max_tokens=self.config.openai.max_tokens
         )
-
-    def create_client_with_tools(self, tools) -> ChatOpenAI:
-        return ChatOpenAI(
-            model=self.model,
-            api_key=self.api_key,
-            temperature=self.config.openai.temperature,
-            max_tokens=self.config.openai.max_tokens
-        ).bind(functions=tools)

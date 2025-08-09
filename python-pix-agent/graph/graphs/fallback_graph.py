@@ -4,7 +4,7 @@ import threading
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
-from graph.nodes.generic.fallback import fallback
+from graph.nodes.generic.fallback import FallbackNodeStrategy
 from utils.print_graph import print_graph
 
 from logger import get_logger
@@ -14,12 +14,15 @@ class FallbackGraph:
     def __init__(self):
         pass
 
-    def build(self):    
+    def build(self):
+        """
+        Cria o workflow de fallback do grafo.
+        """
         logger.info("Criando FallbackGraph")
         
         graph_builder = StateGraph(GraphState)
 
-        graph_builder.add_node("fallback", RunnableLambda(fallback))
+        graph_builder.add_node("fallback", RunnableLambda(FallbackNodeStrategy().build))
         graph_builder.set_entry_point("fallback")
         graph_builder.add_edge("fallback", END)
 

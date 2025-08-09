@@ -194,8 +194,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Files
-files/
+# Project
+images/
 .DS_Store
 
 # Cursor
