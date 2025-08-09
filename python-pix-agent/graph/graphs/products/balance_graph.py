@@ -6,16 +6,10 @@ from graph.graph_state import GraphState
 from graph.nodes.balance.get_balance import GetBalanceNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
+from commons.graph.graph_interface import GraphFactory
 
 from logger import get_logger
 logger = get_logger(__name__)
-
-from abc import ABC, abstractmethod
-
-class GraphFactory(ABC):
-    @abstractmethod
-    def build(self) -> GraphBlueprint:
-        pass
 
 class BalanceGraphFactory(GraphFactory):
     
