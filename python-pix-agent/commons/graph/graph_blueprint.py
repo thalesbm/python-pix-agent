@@ -20,7 +20,7 @@ class GraphBlueprintBuilder:
         self._add_nodes(graph_builder, graph_blueprint)
         self._add_edges(graph_builder, graph_blueprint)
         self._add_endpoints(graph_builder, graph_blueprint)
-        self._after_build(graph_builder)
+        self._after_build(graph_builder, graph_blueprint)
         
         return graph_builder.compile()
 
@@ -39,26 +39,31 @@ class GraphBlueprintBuilder:
         """
         Padroniza o wrapping + decorators, retries, trace, etc.
         """
-        return RunnableLambda(strategy_factory)
+        return RunnableLambda(strategy_factory().build)
 
-    def _add_edges(self, g, bp):
+    def _add_edges(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
         """
         Adiciona as arestas ao grafo.
         """
-        for e in bp.edges:
-            g.add_edge(e.src, e.dst)
-        g.set_entry_point(bp.entry)
+        for e in graph_blueprint.edges:
+            graph_builder.add_edge(e.src, e.dst)
 
-    def _add_endpoints(self, g, bp):
+        graph_builder.set_entry_point(graph_blueprint.entry)
+
+    def _add_endpoints(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
         """
         Adiciona os pontos finais ao grafo.
         """
-        ends = set((bp.end_nodes or []))
-        for e in ends:
-            g.add_edge(e, END)
+        ends = set((graph_blueprint.end_nodes or []))
 
-    def _after_build(self, graph_builder):
+        for e in ends:
+            graph_builder.add_edge(e, END)
+
+    def _after_build(self, graph_builder, graph_blueprint):
         """
         Imprime o grafo após a construção.
         """
-        threading.Thread(target=lambda: asyncio.run(print_graph(graph_builder))).start()
+        threading.Thread(target=lambda: asyncio.run(self.print(graph_builder, graph_blueprint))).start()
+
+    async def print(self, graph_builder, graph_blueprint):
+        print_graph(graph_builder, graph_blueprint.id)

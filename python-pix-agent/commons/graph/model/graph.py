@@ -6,6 +6,7 @@ from commons.graph.model.router import RouterDef
 
 @dataclass(frozen=True)
 class GraphBlueprint:
+    id: str
     entry: str
     nodes: List[NodeDef]
     edges: List[EdgeDef]
