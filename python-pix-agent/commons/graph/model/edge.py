@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
-class EdgeDef:
+class Edge:
     src: str
     dst: str

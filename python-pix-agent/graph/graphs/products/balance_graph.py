@@ -1,6 +1,6 @@
 from commons.graph.model.graph import GraphBlueprint
-from commons.graph.model.node import NodeDef
-from commons.graph.model.edge import EdgeDef
+from commons.graph.model.node import Node
+from commons.graph.model.edge import Edge
 from commons.graph.graph_blueprint import GraphBlueprintBuilder
 from graph.graph_state import GraphState
 from graph.nodes.balance.get_balance import GetBalanceNodeStrategy
@@ -24,13 +24,13 @@ class BalanceGraphFactory(GraphFactory):
             id="balance",
             entry="saldo",
             nodes=[
-                NodeDef("saldo", GetBalanceNodeStrategy),
-                NodeDef("formatar_resposta", FormatAnswerFromStateNodeStrategy),
-                NodeDef("limpar_estado", CleanStateNodeStrategy),
+                Node("saldo", GetBalanceNodeStrategy),
+                Node("formatar_resposta", FormatAnswerFromStateNodeStrategy),
+                Node("limpar_estado", CleanStateNodeStrategy),
             ],
             edges=[
-                EdgeDef("saldo", "formatar_resposta"),
-                EdgeDef("formatar_resposta", "limpar_estado"),
+                Edge("saldo", "formatar_resposta"),
+                Edge("formatar_resposta", "limpar_estado"),
             ],
             end_nodes=["limpar_estado"],
         )

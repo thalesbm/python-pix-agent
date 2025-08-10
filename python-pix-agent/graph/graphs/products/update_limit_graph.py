@@ -8,9 +8,9 @@ from graph.nodes.generic.finish_simple_flow import FinishSimpleFlowNodeStrategy
 
 from commons.graph.graph_interface import GraphFactory
 from commons.graph.model.graph import GraphBlueprint    
-from commons.graph.model.node import NodeDef    
-from commons.graph.model.edge import EdgeDef
-from commons.graph.model.router import RouterDef
+from commons.graph.model.node import Node 
+from commons.graph.model.edge import Edge
+from commons.graph.model.router import Router
 from commons.graph.graph_blueprint import GraphBlueprintBuilder 
 
 from logger import get_logger
@@ -31,15 +31,15 @@ class UpdateLimitGraphFactory(GraphFactory):
             id="update_limit",
             entry="verificar_valor",
             nodes=[
-                NodeDef("verificar_valor", VerifyLimitValueNodeStrategy),
-                NodeDef("atualizar_limite", UpdateLimitNodeStrategy),
-                NodeDef("comprovante", ReceiptNodeStrategy),
-                NodeDef("formatar_resposta", FormatAnswerFromStateNodeStrategy),
-                NodeDef("encerrar_fluxo_simples", FinishSimpleFlowNodeStrategy),
-                NodeDef("limpar_estado", CleanStateNodeStrategy),
+                Node("verificar_valor", VerifyLimitValueNodeStrategy),
+                Node("atualizar_limite", UpdateLimitNodeStrategy),
+                Node("comprovante", ReceiptNodeStrategy),
+                Node("formatar_resposta", FormatAnswerFromStateNodeStrategy),
+                Node("encerrar_fluxo_simples", FinishSimpleFlowNodeStrategy),
+                Node("limpar_estado", CleanStateNodeStrategy),
             ],
             routers=[
-                RouterDef(
+                Router(
                     source="verificar_valor",
                     func=self.decidir_proximo_no_limit,
                     cases={
@@ -49,9 +49,9 @@ class UpdateLimitGraphFactory(GraphFactory):
                 ),
             ],
             edges=[
-                EdgeDef("atualizar_limite", "comprovante"),
-                EdgeDef("comprovante", "formatar_resposta"),
-                EdgeDef("formatar_resposta", "limpar_estado"),
+                Edge("atualizar_limite", "comprovante"),
+                Edge("comprovante", "formatar_resposta"),
+                Edge("formatar_resposta", "limpar_estado"),
             ],
             end_nodes=["limpar_estado", "encerrar_fluxo_simples"],
         )
