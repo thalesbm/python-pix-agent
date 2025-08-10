@@ -1,6 +1,5 @@
 from graph.graph_state import GraphState
 from infra.openai_client import OpenAIClientFactory
-from pipeline.openai import Key
 from langchain_openai.chat_models import ChatOpenAI
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
@@ -21,18 +20,17 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
 
         logger.info("Node: Verify Limit Value")
 
-        api_key = Key.get_openai_key()
-        openai_client = OpenAIClientFactory(api_key=api_key)
-        chat: ChatOpenAI = openai_client.create_basic_client()
+        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
 
         prompt = self.get_prompt(state)
 
         response = chat.invoke(prompt)
-        result = json.loads(response.content)
 
         logger.info("================================================")
         logger.info(f"Resposta: {response.content}")
         logger.info("================================================")
+
+        result = json.loads(response.content)
 
         if result["tem_valor"] is True:
             state.limit.value = result["valor"]

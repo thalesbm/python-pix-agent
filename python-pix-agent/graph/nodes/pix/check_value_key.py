@@ -17,9 +17,7 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
         super().build(state) 
         logger.info("Node: Check Value Key")
 
-        api_key = Key.get_openai_key()
-        openai_client = OpenAIClientFactory(api_key=api_key)
-        chat: ChatOpenAI = openai_client.create_basic_client()
+        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
 
         prompt = self.get_prompt(state)
 

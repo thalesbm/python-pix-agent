@@ -23,7 +23,7 @@ def print_graph(graph, name: str):
         timestamp = int(datetime.now().timestamp())
 
         file_name = str(timestamp) + "_" + name + ".png"
-        with open("files/" + file_name, "wb") as f:
+        with open("images/" + file_name, "wb") as f:
             f.write(png_bytes)
 
         logger.info("Grafo impresso")

@@ -1,8 +1,3 @@
-import asyncio
-import threading
-
-from langgraph.graph import StateGraph, END
-from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
 from graph.nodes.limits.verify_value import VerifyLimitValueNodeStrategy
 from graph.nodes.limits.update_limit import UpdateLimitNodeStrategy
@@ -11,52 +6,60 @@ from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeSt
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 from graph.nodes.generic.finish_simple_flow import FinishSimpleFlowNodeStrategy
 
-from utils.print_graph import print_graph
+from commons.graph.graph_interface import GraphFactory
+from commons.graph.model.graph import GraphBlueprint    
+from commons.graph.model.node import NodeDef    
+from commons.graph.model.edge import EdgeDef
+from commons.graph.model.router import RouterDef
+from commons.graph.graph_blueprint import GraphBlueprintBuilder 
 
 from logger import get_logger
 logger = get_logger(__name__)
 
-class UpdateLimitGraph:
+class UpdateLimitGraphFactory(GraphFactory):
+    
     def __init__(self):
         pass
 
-    def build(self):
+    def build(self) -> GraphBlueprint:
         """
         Cria o workflow de atualizar limite do grafo.
         """
         logger.info("Criando UpdateLimitGraph")
 
-        graph_builder = StateGraph(GraphState)
-
-        graph_builder.add_node("verificar_valor", RunnableLambda(VerifyLimitValueNodeStrategy().build))
-        graph_builder.add_node("atualizar_limite", RunnableLambda(UpdateLimitNodeStrategy().build))
-        graph_builder.add_node("comprovante", RunnableLambda(ReceiptNodeStrategy().build))
-        graph_builder.add_node("formatar_resposta", RunnableLambda(FormatAnswerFromStateNodeStrategy().build))
-        graph_builder.add_node("encerrar_fluxo_simples", RunnableLambda(FinishSimpleFlowNodeStrategy().build))
-        graph_builder.add_node("limpar_estado", RunnableLambda(CleanStateNodeStrategy().build))
-        
-        graph_builder.set_entry_point("verificar_valor")
-
-        graph_builder.add_conditional_edges(
-            "verificar_valor",
-            self.decidir_proximo_no_limit,
-            {
-                "atualizar_limite": "atualizar_limite",
-                "encerrar_fluxo_simples": "encerrar_fluxo_simples",
-            }
+        graph_blueprint = GraphBlueprint(
+            id="update_limit",
+            entry="verificar_valor",
+            nodes=[
+                NodeDef("verificar_valor", VerifyLimitValueNodeStrategy),
+                NodeDef("atualizar_limite", UpdateLimitNodeStrategy),
+                NodeDef("comprovante", ReceiptNodeStrategy),
+                NodeDef("formatar_resposta", FormatAnswerFromStateNodeStrategy),
+                NodeDef("encerrar_fluxo_simples", FinishSimpleFlowNodeStrategy),
+                NodeDef("limpar_estado", CleanStateNodeStrategy),
+            ],
+            routers=[
+                RouterDef(
+                    source="verificar_valor",
+                    func=self.decidir_proximo_no_limit,
+                    cases={
+                        "atualizar_limite": "atualizar_limite",
+                        "encerrar_fluxo_simples": "encerrar_fluxo_simples",
+                    },
+                ),
+            ],
+            edges=[
+                EdgeDef("atualizar_limite", "comprovante"),
+                EdgeDef("comprovante", "formatar_resposta"),
+                EdgeDef("formatar_resposta", "limpar_estado"),
+            ],
+            end_nodes=["limpar_estado", "encerrar_fluxo_simples"],
         )
 
-        graph_builder.add_edge("atualizar_limite", "comprovante")
-        graph_builder.add_edge("comprovante", "formatar_resposta")
-        graph_builder.add_edge("formatar_resposta", "limpar_estado")
-        graph_builder.add_edge("limpar_estado", END)
-        graph_builder.add_edge("encerrar_fluxo_simples", END)
+        graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)
         
-        graph = graph_builder.compile()
         logger.info("UpdateLimitGraph criado")
-        
-        threading.Thread(target=lambda: asyncio.run(self.print(graph))).start()
-        
+
         return graph
 
     @staticmethod
@@ -65,6 +68,3 @@ class UpdateLimitGraph:
             return "atualizar_limite"
         else:
             return "encerrar_fluxo_simples"
-
-    async def print(self, graph):
-        print_graph(graph, "update_limit")
