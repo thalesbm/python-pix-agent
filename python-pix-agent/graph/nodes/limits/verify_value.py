@@ -25,11 +25,12 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
         prompt = self.get_prompt(state)
 
         response = chat.invoke(prompt)
-        result = json.loads(response.content)
 
         logger.info("================================================")
         logger.info(f"Resposta: {response.content}")
         logger.info("================================================")
+
+        result = json.loads(response.content)
 
         if result["tem_valor"] is True:
             state.limit.value = result["valor"]

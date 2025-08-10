@@ -14,3 +14,11 @@ O fallback deveria sempre produzir state.answer curto e útil.
 
 🔧 Visualização opcional:
 O thread de impressão do grafo pode ser condicionado a config.graph.print antes de criar a thread, reduzindo overhead.
+
+🔧 Adote um checkpointer (ex.: MemorySaver em dev; SqliteSaver/RedisSaver em prod) para:
+- Retomar fluxos interrompidos,
+- Guiar “voltar uma etapa”,
+- Auditar o histórico de estados.
+
+🔧 Substitua prompts que pedem JSON por structured output com Pydantic ou “function calling”:
+- Menos fragilidade de json.loads,

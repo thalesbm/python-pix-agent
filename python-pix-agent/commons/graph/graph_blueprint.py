@@ -19,6 +19,7 @@ class GraphBlueprintBuilder:
         
         self._add_entry_point(graph_builder, graph_blueprint)
         self._add_nodes(graph_builder, graph_blueprint)
+        self._add_routers(graph_builder, graph_blueprint)
         self._add_edges(graph_builder, graph_blueprint)
         self._add_endpoints(graph_builder, graph_blueprint)
         self._after_build(graph_builder, graph_blueprint)
@@ -38,9 +39,16 @@ class GraphBlueprintBuilder:
         for n in graph_blueprint.nodes:
             graph_builder.add_node(n.name, RunnableLambda(n.strategy_factory().build))
 
-        if graph_blueprint.routers:
-            for r in graph_blueprint.routers:
-                graph_builder.add_node(r.name, RunnableLambda(lambda st, f=r.func: {"next": f(st)}))
+    def _add_routers(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
+        """
+        Adiciona os roteadores ao grafo.
+        """
+        for r in (graph_blueprint.routers or []):
+            graph_builder.add_conditional_edges(
+                r.source,
+                lambda st, f=r.func: f(st),
+                r.cases
+            )
 
     def _add_edges(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
         """

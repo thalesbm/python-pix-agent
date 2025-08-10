@@ -2,7 +2,7 @@ from graph.graph_state import GraphState
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda, RunnableBranch
 from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
-from graph.graphs.products import BalanceGraphFactory, GetLimitGraph, UpdateLimitGraph, PixGraph
+from graph.graphs.products import BalanceGraphFactory, GetLimitGraph, UpdateLimitGraphFactory, PixGraph
 from graph.graphs import FallbackGraph
 
 from utils.print_graph import print_graph
@@ -68,7 +68,7 @@ class MainGraph:
         """
         saldo_graph = BalanceGraphFactory().build()
         get_limite_graph = GetLimitGraph().build()
-        update_limit_graph = UpdateLimitGraph().build()
+        update_limit_graph = UpdateLimitGraphFactory().build()
         pix_graph = PixGraph().build()
         fallback_graph = FallbackGraph().build()
 
