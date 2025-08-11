@@ -10,6 +10,10 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 class CheckValueKeyNodeStrategy(GraphStrategyInterface):
+    
+    def name(self) -> str:
+        return "check_value_key"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Verifica se o cliente mencionou um valor ou chave Pix.

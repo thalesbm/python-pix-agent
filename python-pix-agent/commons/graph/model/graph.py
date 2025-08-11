@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import List
-from commons.graph.model.node import NodeDef
-from commons.graph.model.edge import EdgeDef
-from commons.graph.model.router import RouterDef
+from commons.graph.model.node import Node
+from commons.graph.model.edge import Edge
+from commons.graph.model.router import Router
 
 @dataclass(frozen=True)
 class GraphBlueprint:
     id: str
     entry: str
-    nodes: List[NodeDef]
-    edges: List[EdgeDef]
-    routers: List[RouterDef] = None
+    nodes: List[Node]
+    edges: List[Edge]
+    routers: List[Router] = None
     end_nodes: List[str] = None

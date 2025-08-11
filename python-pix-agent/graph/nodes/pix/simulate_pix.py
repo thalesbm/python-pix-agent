@@ -6,6 +6,9 @@ logger = get_logger(__name__)
 
 class SimulatePixNodeStrategy(GraphStrategyInterface):
     
+    def name(self) -> str:
+        return "simulate_pix"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Simula a transação Pix.

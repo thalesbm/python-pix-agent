@@ -6,6 +6,9 @@ logger = get_logger(__name__)
 
 class UpdateLimitNodeStrategy(GraphStrategyInterface):
    
+    def name(self) -> str:
+        return "update_limit"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Atualiza o limite do cliente.

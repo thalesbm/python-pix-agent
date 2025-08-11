@@ -12,6 +12,9 @@ logger = get_logger(__name__)
 
 class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
     
+    def name(self) -> str:
+        return "verify_limit_value"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Verifica se o cliente mencionou um valor monetário para atualizar o limite.

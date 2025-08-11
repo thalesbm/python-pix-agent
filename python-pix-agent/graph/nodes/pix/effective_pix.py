@@ -6,6 +6,9 @@ logger = get_logger(__name__)
 
 class EffectivePixNodeStrategy(GraphStrategyInterface):
     
+    def name(self) -> str:
+        return "effective_pix"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Efetiva a transação Pix.
