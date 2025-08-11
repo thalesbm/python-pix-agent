@@ -6,6 +6,9 @@ logger = get_logger(__name__)
 
 class GetBalanceNodeStrategy(GraphStrategyInterface):
     
+    def name() -> str:
+        return "get_balance"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Obtém o saldo do cliente.

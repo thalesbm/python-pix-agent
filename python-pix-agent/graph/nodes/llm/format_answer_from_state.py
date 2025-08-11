@@ -10,6 +10,9 @@ logger = get_logger(__name__)
 
 class FormatAnswerFromStateNodeStrategy(GraphStrategyInterface):
     
+    def name() -> str:
+        return "format_answer_from_state"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Formata a mensagem para o formato de entrada do modelo.

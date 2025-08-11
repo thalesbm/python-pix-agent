@@ -4,6 +4,11 @@ from graph.graph_state import GraphState
 
 class GraphStrategyInterface(ABC):
     
+    @staticmethod
+    @abstractmethod
+    def name() -> str:
+        pass
+
     @abstractmethod
     def build(self, state: GraphState) -> GraphState:
         self.trace(state)

@@ -6,6 +6,9 @@ logger = get_logger(__name__)
 
 class CleanStateNodeStrategy(GraphStrategyInterface):
     
+    def name() -> str:
+        return "clean_state"
+    
     def build(self, state: GraphState) -> GraphState:
         """
         Limpa o estado do grafo.

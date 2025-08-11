@@ -22,17 +22,17 @@ class BalanceGraphFactory(GraphFactory):
 
         graph_blueprint = GraphBlueprint(
             id="balance",
-            entry="saldo",
+            entry=GetBalanceNodeStrategy.name(),
             nodes=[
-                Node("saldo", GetBalanceNodeStrategy),
-                Node("formatar_resposta", FormatAnswerFromStateNodeStrategy),
-                Node("limpar_estado", CleanStateNodeStrategy),
+                Node(GetBalanceNodeStrategy.name(), GetBalanceNodeStrategy),
+                Node(FormatAnswerFromStateNodeStrategy.name(), FormatAnswerFromStateNodeStrategy),
+                Node(CleanStateNodeStrategy.name(), CleanStateNodeStrategy),
             ],
             edges=[
-                Edge("saldo", "formatar_resposta"),
-                Edge("formatar_resposta", "limpar_estado"),
+                Edge(GetBalanceNodeStrategy.name(), FormatAnswerFromStateNodeStrategy.name()),
+                Edge(FormatAnswerFromStateNodeStrategy.name(), CleanStateNodeStrategy.name()),
             ],
-            end_nodes=["limpar_estado"],
+            end_nodes=[CleanStateNodeStrategy.name()],
         )
 
         graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)

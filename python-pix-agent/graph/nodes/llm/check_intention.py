@@ -8,6 +8,9 @@ logger = get_logger(__name__)
 
 class CheckIntentionNodeStrategy(GraphStrategyInterface):
     
+    def name() -> str:
+        return "check_intention"
+
     def build(self, state: GraphState) -> GraphState:
         """
         Verifica a intenção do cliente.
