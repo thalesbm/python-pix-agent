@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class CheckIntentionNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "check_intention"
 
     def build(self, state: GraphState) -> GraphState:

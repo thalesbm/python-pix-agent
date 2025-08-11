@@ -6,7 +6,7 @@ logger = get_logger(__name__)
 
 class FinishSimpleFlowNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "finish_simple_flow"
     
     def build(self, state: GraphState) -> GraphState:

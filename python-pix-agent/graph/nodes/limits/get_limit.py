@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 class GetLimitNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "get_limit"
 
     def build(self, state: GraphState) -> GraphState:

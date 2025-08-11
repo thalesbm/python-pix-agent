@@ -6,7 +6,7 @@ logger = get_logger(__name__)
 
 class ReceiptNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "receipt"
     
     def build(self, state: GraphState) -> GraphState:

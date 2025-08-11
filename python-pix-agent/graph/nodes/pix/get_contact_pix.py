@@ -6,7 +6,7 @@ logger = get_logger(__name__)
 
 class GetContactPixNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "get_contact_pix"
     
     def build(self, state: GraphState) -> GraphState:

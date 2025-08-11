@@ -4,8 +4,9 @@ from graph.graph_state import GraphState
 
 class GraphStrategyInterface(ABC):
     
+    @staticmethod
     @abstractmethod
-    def name(self) -> str:
+    def name() -> str:
         pass
 
     @abstractmethod

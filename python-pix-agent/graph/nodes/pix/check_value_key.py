@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 
 class CheckValueKeyNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "check_value_key"
     
     def build(self, state: GraphState) -> GraphState:

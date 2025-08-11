@@ -6,7 +6,7 @@ logger = get_logger(__name__)
 
 class FallbackNodeStrategy(GraphStrategyInterface):
     
-    def name(self) -> str:
+    def name() -> str:
         return "fallback"
     
     def build(self, state: GraphState) -> GraphState:
