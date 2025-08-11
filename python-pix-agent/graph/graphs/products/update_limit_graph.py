@@ -29,31 +29,31 @@ class UpdateLimitGraphFactory(GraphFactory):
 
         graph_blueprint = GraphBlueprint(
             id="update_limit",
-            entry="verificar_valor",
+            entry=VerifyLimitValueNodeStrategy.name(),
             nodes=[
-                Node("verificar_valor", VerifyLimitValueNodeStrategy),
-                Node("atualizar_limite", UpdateLimitNodeStrategy),
-                Node("comprovante", ReceiptNodeStrategy),
-                Node("formatar_resposta", FormatAnswerFromStateNodeStrategy),
-                Node("encerrar_fluxo_simples", FinishSimpleFlowNodeStrategy),
-                Node("limpar_estado", CleanStateNodeStrategy),
+                Node(VerifyLimitValueNodeStrategy.name(), VerifyLimitValueNodeStrategy),
+                Node(UpdateLimitNodeStrategy.name(), UpdateLimitNodeStrategy),
+                Node(ReceiptNodeStrategy.name(), ReceiptNodeStrategy),
+                Node(FormatAnswerFromStateNodeStrategy.name(), FormatAnswerFromStateNodeStrategy),
+                Node(FinishSimpleFlowNodeStrategy.name(), FinishSimpleFlowNodeStrategy),
+                Node(CleanStateNodeStrategy.name(), CleanStateNodeStrategy),
             ],
             routers=[
                 Router(
-                    source="verificar_valor",
+                    source=VerifyLimitValueNodeStrategy.name(),   
                     func=self.decidir_proximo_no_limit,
                     cases={
-                        "atualizar_limite": "atualizar_limite",
-                        "encerrar_fluxo_simples": "encerrar_fluxo_simples",
+                        UpdateLimitNodeStrategy.name(): UpdateLimitNodeStrategy.name(),
+                        FinishSimpleFlowNodeStrategy.name(): FinishSimpleFlowNodeStrategy.name(),
                     },
                 ),
             ],
             edges=[
-                Edge("atualizar_limite", "comprovante"),
-                Edge("comprovante", "formatar_resposta"),
-                Edge("formatar_resposta", "limpar_estado"),
+                Edge(UpdateLimitNodeStrategy.name(), ReceiptNodeStrategy.name()),
+                Edge(ReceiptNodeStrategy.name(), FormatAnswerFromStateNodeStrategy.name()),
+                Edge(FormatAnswerFromStateNodeStrategy.name(), CleanStateNodeStrategy.name()),
             ],
-            end_nodes=["limpar_estado", "encerrar_fluxo_simples"],
+            end_nodes=[CleanStateNodeStrategy.name(), FinishSimpleFlowNodeStrategy.name()],
         )
 
         graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)
@@ -65,6 +65,6 @@ class UpdateLimitGraphFactory(GraphFactory):
     @staticmethod
     def decidir_proximo_no_limit(state: GraphState) -> str:
         if state.limit.has_limit:
-            return "atualizar_limite"
+            return UpdateLimitNodeStrategy.name()
         else:
-            return "encerrar_fluxo_simples"
+            return FinishSimpleFlowNodeStrategy.name()
