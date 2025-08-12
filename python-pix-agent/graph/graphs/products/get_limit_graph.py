@@ -1,35 +1,42 @@
-from langgraph.graph import StateGraph, END
-from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
 from graph.nodes.limits.get_limit import GetLimitNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 
+from commons.graph.graph_interface import GraphFactory
+from commons.graph.model.graph import GraphBlueprint
+from commons.graph.model.node import Node
+from commons.graph.model.edge import Edge
+from commons.graph.graph_blueprint import GraphBlueprintBuilder
+
 from logger import get_logger
 logger = get_logger(__name__)
 
-class GetLimitGraph:
-    def __init__(self):
-        pass
+class GetLimitGraphFactory(GraphFactory):
 
-    def build(self):
+    def build(self) -> GraphBlueprint:    
         """
         Cria o workflow de limite do grafo.
         """
         logger.info("Criando GetLimitGraph")
 
-        graph_builder = StateGraph(GraphState)
+        graph = GraphBlueprint(
+            id="get_limit",
+            entry=GetLimitNodeStrategy.name(),
+            nodes=[
+                Node(GetLimitNodeStrategy.name(), GetLimitNodeStrategy),
+                Node(FormatAnswerFromStateNodeStrategy.name(), FormatAnswerFromStateNodeStrategy),
+                Node(CleanStateNodeStrategy.name(), CleanStateNodeStrategy),
+            ],
+            edges=[
+                Edge(GetLimitNodeStrategy.name(), FormatAnswerFromStateNodeStrategy.name()),
+                Edge(FormatAnswerFromStateNodeStrategy.name(), CleanStateNodeStrategy.name()),
+            ],
+            end_nodes=[CleanStateNodeStrategy.name()],
+        )
 
-        graph_builder.add_node("consultar_limite", RunnableLambda(GetLimitNodeStrategy().build))
-        graph_builder.add_node("formatar_resposta", RunnableLambda(FormatAnswerFromStateNodeStrategy().build))
-        graph_builder.add_node("limpar_estado", RunnableLambda(CleanStateNodeStrategy().build))
-        
-        graph_builder.set_entry_point("consultar_limite")
-        graph_builder.add_edge("consultar_limite", "formatar_resposta") 
-        graph_builder.add_edge("formatar_resposta", "limpar_estado") 
-        graph_builder.add_edge("limpar_estado", END) 
+        graph = GraphBlueprintBuilder(GraphState).build(graph)
 
-        graph = graph_builder.compile()
         logger.info("GetLimitGraph criado")
 
         return graph
