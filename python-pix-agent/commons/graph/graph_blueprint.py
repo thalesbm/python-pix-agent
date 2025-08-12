@@ -47,7 +47,7 @@ class GraphBlueprintBuilder:
             graph_builder.add_conditional_edges(
                 r.source,
                 lambda st, f=r.func: f(st),
-                r.cases
+                r.get_cases()
             )
 
     def _add_edges(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
