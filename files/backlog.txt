@@ -10,6 +10,3 @@ Use interrupt para coletar dados faltantes do usuário (ex.: pedir chave ou valo
 - Retomar fluxos interrompidos,
 - Guiar “voltar uma etapa”,
 - Auditar o histórico de estados.
-
-🔧 Substitua prompts que pedem JSON por structured output com Pydantic ou “function calling”:
-- Menos fragilidade de json.loads,
