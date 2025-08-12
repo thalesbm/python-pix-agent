@@ -1,11 +1,8 @@
-import asyncio
-import threading
-
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
 from graph.nodes.generic.fallback import FallbackNodeStrategy
-from utils.print_graph import print_graph
+from utils.print_graph import config_print_graph
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -29,9 +26,6 @@ class FallbackGraph:
         graph = graph_builder.compile()
         logger.info("FallbackGraph criado")
 
-        threading.Thread(target=lambda: asyncio.run(self.print(graph))).start()
+        config_print_graph(graph, "fallback")
 
         return graph
-
-    async def print(self, graph):
-        print_graph(graph, "fallback")

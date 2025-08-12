@@ -2,9 +2,7 @@ from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from commons.graph.model.graph import GraphBlueprint
 
-import asyncio
-import threading
-from utils.print_graph import print_graph
+from utils.print_graph import config_print_graph
 
 class GraphBlueprintBuilder:
 
@@ -70,7 +68,4 @@ class GraphBlueprintBuilder:
         """
         Imprime o grafo após a construção.
         """
-        threading.Thread(target=lambda: asyncio.run(self._print(graph_builder, graph_blueprint))).start()
-
-    async def _print(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
-        print_graph(graph_builder, graph_blueprint.id)
+        config_print_graph(graph_builder, graph_blueprint.id)

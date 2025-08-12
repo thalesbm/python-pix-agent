@@ -5,8 +5,6 @@ from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.graphs.products import BalanceGraphFactory, GetLimitGraph, UpdateLimitGraphFactory, PixGraph
 from graph.graphs import FallbackGraph
 
-from utils.print_graph import print_graph
-
 from logger import get_logger
 logger = get_logger(__name__)
 
@@ -81,6 +79,3 @@ class MainGraph:
         )
 
         return router
-
-    async def print(self, graph):
-        print_graph(graph, "main")

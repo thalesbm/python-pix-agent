@@ -1,3 +1,6 @@
+import asyncio
+import threading
+
 from langchain_core.runnables.graph import MermaidDrawMethod
 from datetime import datetime
 from config import get_config
@@ -5,25 +8,25 @@ from config import get_config
 from logger import get_logger
 logger = get_logger(__name__)
 
-def print_graph(graph, name: str):
-    """Imprime o grafo em formato de imagem."""
-
+def config_print_graph(graph, name: str):
     config = get_config()
 
     if config.graph.print:
-        """
-        Imprime o grafo em formato de imagem.
-        """
-        logger.info("Imprimindo grafo")
+        threading.Thread(target=lambda: asyncio.run(print(graph, name))).start()
 
-        png_bytes = graph.get_graph().draw_mermaid_png(
-            draw_method=MermaidDrawMethod.API
-        )
+async def print(graph, name: str):
+    """Imprime o grafo em formato de imagem."""
 
-        timestamp = int(datetime.now().timestamp())
+    logger.info("Imprimindo grafo")
 
-        file_name = str(timestamp) + "_" + name + ".png"
-        with open("images/" + file_name, "wb") as f:
-            f.write(png_bytes)
+    png_bytes = graph.get_graph().draw_mermaid_png(
+        draw_method=MermaidDrawMethod.API
+    )
 
-        logger.info("Grafo impresso")
+    timestamp = int(datetime.now().timestamp())
+
+    file_name = str(timestamp) + "_" + name + ".png"
+    with open("images/" + file_name, "wb") as f:
+        f.write(png_bytes)
+
+    logger.info("Grafo impresso")
