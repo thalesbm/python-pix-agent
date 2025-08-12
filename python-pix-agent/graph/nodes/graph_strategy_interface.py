@@ -14,4 +14,4 @@ class GraphStrategyInterface(ABC):
         self.trace(state)
 
     def trace(self, state: GraphState):
-        state.trace.append(self.__class__.__name__)
+        state.trace.append(type(self).name())

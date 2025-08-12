@@ -46,6 +46,6 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
             Retornar apenas a intenção, sem nenhum outro texto.
 
             Mensagem do usuário: "{state.user_message}"
-            """
+        """
 
         return prompt.strip()

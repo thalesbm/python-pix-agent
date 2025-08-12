@@ -6,15 +6,6 @@ Considere checkpointer para persistir o GraphState (memória entre execuções/e
 🔧 Interrupções explícitas:
 Use interrupt para coletar dados faltantes do usuário (ex.: pedir chave ou valor faltantes) em vez de encerrar o fluxo.
 
-🔧 Estruturas mais declarativas:
-Onde há parsing de JSON, substitua por with_structured_output com modelos Pydantic (reduz falhas do JSON).
-
-🔧 Rotas/fallbacks produtivos:
-O fallback deveria sempre produzir state.answer curto e útil.
-
-🔧 Visualização opcional:
-O thread de impressão do grafo pode ser condicionado a config.graph.print antes de criar a thread, reduzindo overhead.
-
 🔧 Adote um checkpointer (ex.: MemorySaver em dev; SqliteSaver/RedisSaver em prod) para:
 - Retomar fluxos interrompidos,
 - Guiar “voltar uma etapa”,

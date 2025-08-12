@@ -2,10 +2,9 @@ from graph.graph_state import GraphState
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda, RunnableBranch
 from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
-from graph.graphs.products import BalanceGraphFactory, GetLimitGraph, UpdateLimitGraphFactory, PixGraph
+from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, UpdateLimitGraphFactory, PixGraph
 from graph.graphs import FallbackGraph
-
-from utils.print_graph import print_graph
+from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -19,8 +18,9 @@ class MainGraph:
         Gerencia o workflow do grafo.
         """
         logger.info("Criando MainGraph")
+        logger.info("Criando MainGraph")
         
-        if state is None or "clean_state" in state.trace:
+        if state is None or CleanStateNodeStrategy.name() in state.trace:
             state = GraphState(user_message=message)
 
         if state.intention:
@@ -67,7 +67,7 @@ class MainGraph:
             O router é responsável por direcionar o fluxo do grafo com base na intenção do usuário.
         """
         saldo_graph = BalanceGraphFactory().build()
-        get_limite_graph = GetLimitGraph().build()
+        get_limite_graph = GetLimitGraphFactory().build()
         update_limit_graph = UpdateLimitGraphFactory().build()
         pix_graph = PixGraph().build()
         fallback_graph = FallbackGraph().build()
@@ -81,6 +81,3 @@ class MainGraph:
         )
 
         return router
-
-    async def print(self, graph):
-        print_graph(graph, "main")

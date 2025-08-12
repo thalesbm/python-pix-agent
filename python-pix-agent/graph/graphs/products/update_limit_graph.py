@@ -42,10 +42,10 @@ class UpdateLimitGraphFactory(GraphFactory):
                 Router(
                     source=VerifyLimitValueNodeStrategy.name(),   
                     func=self.decidir_proximo_no_limit,
-                    cases={
-                        UpdateLimitNodeStrategy.name(): UpdateLimitNodeStrategy.name(),
-                        FinishSimpleFlowNodeStrategy.name(): FinishSimpleFlowNodeStrategy.name(),
-                    },
+                    dst=[
+                        UpdateLimitNodeStrategy.name(),
+                        FinishSimpleFlowNodeStrategy.name(),
+                    ]
                 ),
             ],
             edges=[

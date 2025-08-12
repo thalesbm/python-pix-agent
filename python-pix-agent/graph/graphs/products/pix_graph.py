@@ -1,6 +1,3 @@
-import asyncio
-import threading
-
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
@@ -15,8 +12,6 @@ from graph.nodes.receipt.receipt import ReceiptNodeStrategy
 from graph.nodes.generic.finish_simple_flow import FinishSimpleFlowNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
-
-from utils.print_graph import print_graph
 
 from logger import get_logger
 logger = get_logger(__name__)
@@ -71,8 +66,6 @@ class PixGraph:
         graph = graph_builder.compile()
         logger.info("PixGraph criado")
 
-        threading.Thread(target=lambda: asyncio.run(self.print(graph))).start()
-
         return graph
 
     @staticmethod
@@ -86,6 +79,3 @@ class PixGraph:
             return "saldo"
         else:
             return "encerrar_fluxo_simples"
-
-    async def print(self, graph):
-        print_graph(graph, "pix")
