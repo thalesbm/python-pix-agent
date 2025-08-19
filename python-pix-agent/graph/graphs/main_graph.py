@@ -54,9 +54,9 @@ class MainGraph:
 
         graph_builder.add_edge(CheckIntentionNodeStrategy.name(), "router")
 
-        raw_state = graph_builder.compile().invoke(state)
+        graph = graph_builder.compile().invoke(state)
         
-        final_state = GraphState(**raw_state) 
+        final_state = GraphState(**graph)
 
         logger.info("MainGraph criado")
 
