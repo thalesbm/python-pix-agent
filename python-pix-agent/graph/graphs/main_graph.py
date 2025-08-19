@@ -47,12 +47,12 @@ class MainGraph:
 
         router = self.build_router()
         
-        graph_builder.add_node("verificar_intencao", RunnableLambda(CheckIntentionNodeStrategy().build))
+        graph_builder.add_node(CheckIntentionNodeStrategy.name(), RunnableLambda(CheckIntentionNodeStrategy().build))
         graph_builder.add_node("router", router)
 
-        graph_builder.set_entry_point("verificar_intencao")
+        graph_builder.set_entry_point(CheckIntentionNodeStrategy.name())
 
-        graph_builder.add_edge("verificar_intencao", "router")
+        graph_builder.add_edge(CheckIntentionNodeStrategy.name(), "router")
 
         raw_state = graph_builder.compile().invoke(state)
         

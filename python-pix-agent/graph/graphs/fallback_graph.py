@@ -19,9 +19,9 @@ class FallbackGraph:
         
         graph_builder = StateGraph(GraphState)
 
-        graph_builder.add_node("fallback", RunnableLambda(FallbackNodeStrategy().build))
-        graph_builder.set_entry_point("fallback")
-        graph_builder.add_edge("fallback", END)
+        graph_builder.add_node(FallbackNodeStrategy.name(), RunnableLambda(FallbackNodeStrategy().build))
+        graph_builder.set_entry_point(FallbackNodeStrategy.name())
+        graph_builder.add_edge(FallbackNodeStrategy.name(), END)
 
         graph = graph_builder.compile()
         logger.info("FallbackGraph criado")
