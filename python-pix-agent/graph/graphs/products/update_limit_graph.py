@@ -21,7 +21,11 @@ class UpdateLimitGraphFactory(GraphFactory):
     def __init__(self):
         pass
 
-    def build(self) -> GraphBlueprint:
+    @staticmethod
+    def name() -> str:
+        return "update-limit-graph"
+
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de atualizar limite do grafo.
         """
@@ -56,20 +60,11 @@ class UpdateLimitGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name(), FinishSimpleFlowNodeStrategy.name()],
         )
 
-        graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)
+        GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
 
-        # graph.invoke({"mensagem": "quero aumentar meu limite"}, stream=True)
-
-        # # result = graph.invoke(message, stream=True)
-        # for step in graph:
-        #     if step["type"] == "interrupt":
-        #         print(step["content"]["message"])  # Aqui deveria chegar sua mensagem
-
-            
-        
         logger.info("UpdateLimitGraph criado")
 
-        return graph
+        return state
 
     @staticmethod
     def decidir_proximo_no_limit(state: GraphState) -> str:

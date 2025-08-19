@@ -22,7 +22,11 @@ class PixGraph:
     def __init__(self):
         pass
 
-    def build(self):
+    @staticmethod
+    def name() -> str:
+        return "pix-graph"
+
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de pix do grafo.
         """
@@ -65,13 +69,13 @@ class PixGraph:
         graph_builder.add_edge(CleanStateNodeStrategy.name(), END)
         graph_builder.add_edge(FinishSimpleFlowNodeStrategy.name(), END)
 
-        graph = graph_builder.compile()
+        graph = graph_builder.compile().invoke(state)
 
         config_print_graph(graph, "pix")
 
         logger.info("PixGraph criado")
 
-        return graph
+        return state
 
     @staticmethod
     def decidir_proximo_no_depois_input(state: GraphState) -> str:

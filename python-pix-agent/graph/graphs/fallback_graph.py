@@ -11,7 +11,11 @@ class FallbackGraph:
     def __init__(self):
         pass
 
-    def build(self):
+    @staticmethod
+    def name() -> str:
+        return "fallback-graph"
+
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de fallback do grafo.
         """
@@ -23,9 +27,9 @@ class FallbackGraph:
         graph_builder.set_entry_point(FallbackNodeStrategy.name())
         graph_builder.add_edge(FallbackNodeStrategy.name(), END)
 
-        graph = graph_builder.compile()
+        graph = graph_builder.compile().invoke(state)
         logger.info("FallbackGraph criado")
 
         config_print_graph(graph, "fallback")
 
-        return graph
+        return state

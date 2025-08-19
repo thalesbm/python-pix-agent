@@ -48,8 +48,8 @@ class MainView:
                 with st.spinner("Processando sua solicitação..."):
                     state = callback(prompt)
                     
-                    response_content = state.answer
-                    response_details = state.trace
+                    response_content = state["answer"]
+                    response_details = state["trace"]
                     
                     st.session_state.messages.append({
                         "role": "assistant",
