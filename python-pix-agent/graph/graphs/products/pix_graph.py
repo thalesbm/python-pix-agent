@@ -13,9 +13,9 @@ from graph.nodes.generic.finish_simple_flow import FinishSimpleFlowNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 
-from utils.print_graph import config_print_graph
+from commons.utils.print_graph import config_print_graph
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class PixGraph:
