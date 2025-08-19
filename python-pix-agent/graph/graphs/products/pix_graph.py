@@ -69,13 +69,13 @@ class PixGraph:
         graph_builder.add_edge(CleanStateNodeStrategy.name(), END)
         graph_builder.add_edge(FinishSimpleFlowNodeStrategy.name(), END)
 
-        graph = graph_builder.compile().invoke(state)
+        final_state = graph_builder.compile().invoke(state)
 
-        config_print_graph(graph, "pix")
+        config_print_graph(final_state, "pix")
 
         logger.info("PixGraph criado")
 
-        return state
+        return final_state
 
     @staticmethod
     def decidir_proximo_no_depois_input(state: GraphState) -> str:

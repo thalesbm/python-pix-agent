@@ -39,8 +39,8 @@ class GetLimitGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name()],
         )
 
-        GraphBlueprintBuilder(GraphState).build(graph, state)
+        final_state = GraphBlueprintBuilder(GraphState).build(graph, state)
 
         logger.info("GetLimitGraph criado")
 
-        return state
+        return final_state

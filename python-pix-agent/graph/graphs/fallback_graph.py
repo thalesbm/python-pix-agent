@@ -27,9 +27,9 @@ class FallbackGraph:
         graph_builder.set_entry_point(FallbackNodeStrategy.name())
         graph_builder.add_edge(FallbackNodeStrategy.name(), END)
 
-        graph = graph_builder.compile().invoke(state)
+        final_state = graph_builder.compile().invoke(state)
         logger.info("FallbackGraph criado")
 
-        config_print_graph(graph, "fallback")
+        config_print_graph(final_state, "fallback")
 
-        return state
+        return final_state

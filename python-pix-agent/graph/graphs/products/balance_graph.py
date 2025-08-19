@@ -39,9 +39,8 @@ class BalanceGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name()],
         )
 
-        teste = GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
+        final_state = GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
 
-        # print(state)
-        print(teste)
-        
-        return teste
+        logger.info("BalanceGraph criado")
+
+        return final_state

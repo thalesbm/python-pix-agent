@@ -60,11 +60,11 @@ class UpdateLimitGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name(), FinishSimpleFlowNodeStrategy.name()],
         )
 
-        GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
+        final_state = GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
 
         logger.info("UpdateLimitGraph criado")
 
-        return state
+        return final_state
 
     @staticmethod
     def decidir_proximo_no_limit(state: GraphState) -> str:
