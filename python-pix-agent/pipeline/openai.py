@@ -1,5 +1,5 @@
 import os
-from logger.logger_config import get_logger
+from commons.logger.logger_config import get_logger
 from dotenv import load_dotenv
 
 logger = get_logger(__name__)

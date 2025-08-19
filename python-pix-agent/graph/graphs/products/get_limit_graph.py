@@ -9,7 +9,7 @@ from commons.graph.model.node import Node
 from commons.graph.model.edge import Edge
 from commons.graph.graph_blueprint import GraphBlueprintBuilder
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class GetLimitGraphFactory(GraphFactory):

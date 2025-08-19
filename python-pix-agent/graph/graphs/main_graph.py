@@ -6,7 +6,7 @@ from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, Upd
 from graph.graphs import FallbackGraph
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class MainGraph:
@@ -47,16 +47,16 @@ class MainGraph:
 
         router = self.build_router()
         
-        graph_builder.add_node("verificar_intencao", RunnableLambda(CheckIntentionNodeStrategy().build))
+        graph_builder.add_node(CheckIntentionNodeStrategy.name(), RunnableLambda(CheckIntentionNodeStrategy().build))
         graph_builder.add_node("router", router)
 
-        graph_builder.set_entry_point("verificar_intencao")
+        graph_builder.set_entry_point(CheckIntentionNodeStrategy.name())
 
-        graph_builder.add_edge("verificar_intencao", "router")
+        graph_builder.add_edge(CheckIntentionNodeStrategy.name(), "router")
 
-        raw_state = graph_builder.compile().invoke(state)
+        graph = graph_builder.compile().invoke(state)
         
-        final_state = GraphState(**raw_state) 
+        final_state = GraphState(**graph)
 
         logger.info("MainGraph criado")
 

@@ -7,6 +7,4 @@ Considere checkpointer para persistir o GraphState (memória entre execuções/e
 Use interrupt para coletar dados faltantes do usuário (ex.: pedir chave ou valor faltantes) em vez de encerrar o fluxo.
 
 🔧 Adote um checkpointer (ex.: MemorySaver em dev; SqliteSaver/RedisSaver em prod) para:
-- Retomar fluxos interrompidos,
-- Guiar “voltar uma etapa”,
-- Auditar o histórico de estados.
+- Retomar fluxos interrompidos

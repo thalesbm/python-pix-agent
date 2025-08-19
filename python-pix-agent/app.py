@@ -1,11 +1,11 @@
 from controller.main_controller import MainController
 from config import get_config
-from logger import setup_logging, get_logger
 from view.main_view import MainView
 import streamlit as st
 
 from graph.graph_state import GraphState
 
+from commons.logger import setup_logging, get_logger
 logger = get_logger(__name__)
 
 def init():

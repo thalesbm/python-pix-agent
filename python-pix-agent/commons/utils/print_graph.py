@@ -5,7 +5,7 @@ from langchain_core.runnables.graph import MermaidDrawMethod
 from datetime import datetime
 from config import get_config
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 def config_print_graph(graph, name: str):
