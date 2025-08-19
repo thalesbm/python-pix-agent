@@ -69,9 +69,6 @@ class PixGraph:
 
         config_print_graph(graph, "pix")
 
-
-        config_print_graph(graph, "pix")
-
         logger.info("PixGraph criado")
 
         return graph
