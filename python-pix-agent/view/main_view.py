@@ -4,7 +4,7 @@ from datetime import datetime
 
 from graph.graph_state import GraphState
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class MainView:

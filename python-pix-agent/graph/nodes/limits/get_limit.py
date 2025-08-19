@@ -3,7 +3,7 @@ from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from service.limit.limit_service import LimitService
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class GetLimitNodeStrategy(GraphStrategyInterface):

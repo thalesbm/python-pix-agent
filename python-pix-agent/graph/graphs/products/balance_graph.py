@@ -8,7 +8,7 @@ from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeSt
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 from commons.graph.graph_interface import GraphFactory
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class BalanceGraphFactory(GraphFactory):

@@ -7,7 +7,7 @@ from model.pix import PixModel
 
 from langchain_core.prompts import ChatPromptTemplate
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class CheckValueKeyNodeStrategy(GraphStrategyInterface):

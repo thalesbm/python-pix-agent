@@ -2,9 +2,9 @@ from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from graph.graph_state import GraphState
 from graph.nodes.generic.fallback import FallbackNodeStrategy
-from utils.print_graph import config_print_graph
+from commons.utils.print_graph import config_print_graph
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class FallbackGraph:

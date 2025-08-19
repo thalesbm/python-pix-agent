@@ -5,7 +5,7 @@ from infra.openai_client import OpenAIClientFactory
 from langchain_openai.chat_models import ChatOpenAI 
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class FormatAnswerFromStateNodeStrategy(GraphStrategyInterface):

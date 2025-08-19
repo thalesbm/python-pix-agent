@@ -6,7 +6,7 @@ from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, Upd
 from graph.graphs import FallbackGraph
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
 
-from logger import get_logger
+from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class MainGraph:
