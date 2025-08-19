@@ -5,7 +5,6 @@ from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, UpdateLimitGraphFactory, PixGraph
 from graph.graphs import FallbackGraph
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
-from langgraph.executors import LocalExecutor
 
 from commons.logger import get_logger
 logger = get_logger(__name__)
@@ -57,18 +56,17 @@ class MainGraph:
 
         graph = graph_builder.compile()
 
-        executor = LocalExecutor(graph=graph)
+        steps = graph.invoke(state, stream=True)
 
-        steps = executor.stream(state)
-
-        # steps = graph.invoke(state, stream=True)
         print("Tipo de steps:", type(steps))
         print("Tipo de steps:", steps)
 
-        for step in steps:
-            if step["type"] == "interrupt":
-                print("interrupt")
+        # for step in steps:
+            # if step["type"] == "interrupt":
+                # print("interrupt")
                 # print(step["content"]["message"])
+            # elif step["type"] == "end":
+                # final_state = GraphState(**step["data"])
         
         final_state = GraphState(**steps)
 
