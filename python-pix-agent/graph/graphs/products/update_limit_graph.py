@@ -57,6 +57,15 @@ class UpdateLimitGraphFactory(GraphFactory):
         )
 
         graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)
+
+        # graph.invoke({"mensagem": "quero aumentar meu limite"}, stream=True)
+
+        # # result = graph.invoke(message, stream=True)
+        # for step in graph:
+        #     if step["type"] == "interrupt":
+        #         print(step["content"]["message"])  # Aqui deveria chegar sua mensagem
+
+            
         
         logger.info("UpdateLimitGraph criado")
 

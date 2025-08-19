@@ -5,6 +5,7 @@ from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, UpdateLimitGraphFactory, PixGraph
 from graph.graphs import FallbackGraph
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
+from langgraph.executors import LocalExecutor
 
 from commons.logger import get_logger
 logger = get_logger(__name__)
@@ -54,9 +55,22 @@ class MainGraph:
 
         graph_builder.add_edge(CheckIntentionNodeStrategy.name(), "router")
 
-        graph = graph_builder.compile().invoke(state)
+        graph = graph_builder.compile()
+
+        executor = LocalExecutor(graph=graph)
+
+        steps = executor.stream(state)
+
+        # steps = graph.invoke(state, stream=True)
+        print("Tipo de steps:", type(steps))
+        print("Tipo de steps:", steps)
+
+        for step in steps:
+            if step["type"] == "interrupt":
+                print("interrupt")
+                # print(step["content"]["message"])
         
-        final_state = GraphState(**graph)
+        final_state = GraphState(**steps)
 
         logger.info("MainGraph criado")
 

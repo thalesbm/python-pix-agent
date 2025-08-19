@@ -9,10 +9,8 @@ from commons.logger import setup_logging, get_logger
 logger = get_logger(__name__)
 
 def init():
-    # Carrega configuração
     config = get_config()
-    
-    # Configura logging centralizado
+
     setup_logging(
         level=config.logging.level,
         format_string=config.logging.format,

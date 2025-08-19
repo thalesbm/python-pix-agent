@@ -51,10 +51,7 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
             
             raise interrupt(
                 {
-                    "limit_value_requested": True,
-                    "message": state.answer,
-                    "next_step": "awaiting_limit_value",
-                    "error": "json_parse_error"
+                     "message": state.answer,
                 }
             )
 
@@ -72,9 +69,7 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
             # Interrompe o fluxo e solicita o valor do limite
             raise interrupt(
                 {
-                    "limit_value_requested": True,
                     "message": result["resposta"],
-                    "next_step": "awaiting_limit_value"
                 }
             )
 
