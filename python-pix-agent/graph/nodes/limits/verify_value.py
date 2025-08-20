@@ -38,40 +38,22 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
 
         state.trace.append("verify_limit_value")
 
-        try:
-            result = json.loads(response.content)
-        except json.JSONDecodeError as e:
-            logger.error(f"Erro ao fazer parse do JSON: {e}")
-            logger.error(f"Conteúdo da resposta: {response.content}")
-            
-            # Fallback: assume que não há valor e solicita informação
-            state.limit.value = None
-            state.limit.has_limit = False
-            state.answer = "Desculpe, não consegui entender o valor. Pode me informar qual valor você deseja definir como novo limite?"
-            
-            raise interrupt(
-                {
-                     "message": state.answer,
-                }
-            )
-
+        result = json.loads(response.content)
+        
         if result["tem_valor"] is True:
             state.limit.value = result["valor"]
             state.limit.last_update = datetime.now()
             state.limit.has_limit = True
         else: 
-            state.limit.value = None
             state.limit.has_limit = False
             state.answer = result["resposta"]
             
             logger.info("Valor do limite não fornecido - interrompendo fluxo para solicitar informação")
             
-            # Interrompe o fluxo e solicita o valor do limite
-            raise interrupt(
-                {
-                    "message": result["resposta"],
-                }
-            )
+            raise interrupt({
+                "answer": "Ops, deu ruim!",
+                "state": state.model_dump()
+            })
 
         return state
 

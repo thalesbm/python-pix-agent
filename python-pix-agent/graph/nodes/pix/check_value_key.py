@@ -37,7 +37,6 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
         logger.info(f"response.tem_chave: {response.has_key}")
         logger.info(f"response.valor: {response.value}")
         logger.info(f"response.chave: {response.key}")
-        logger.info(f"response.tipo_chave: {response.key_type}")
         logger.info(f"response.more_information: {response.more_information}")
 
         if response.has_value:

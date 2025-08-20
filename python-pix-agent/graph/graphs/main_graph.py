@@ -1,10 +1,13 @@
 from graph.graph_state import GraphState
 from langgraph.graph import StateGraph, END
-from langchain_core.runnables import RunnableLambda, RunnableBranch
+from langgraph.types import Interrupt
+from langchain_core.runnables import RunnableLambda
 from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, UpdateLimitGraphFactory, PixGraph
 from graph.graphs import FallbackGraph
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
+
+import json
 
 from commons.logger import get_logger
 logger = get_logger(__name__)
@@ -18,18 +21,17 @@ class MainGraph:
         Gerencia o workflow do grafo.
         """
         logger.info("Criando MainGraph")
-        logger.info("Criando MainGraph")
         
-        if state is None or CleanStateNodeStrategy.name() in state.trace:
-            state = GraphState(user_message=message)
+        # if state is None or CleanStateNodeStrategy.name() in state.trace:
+        #     state = GraphState(user_message=message)
 
-        if state.intention:
-            state.user_message = message
-            state.intention = state.intention
-            state.trace = []
-            return self.create_workflow(state)
-        else:
-            return self.create_workflow(state)
+        # if state.intention:
+        #     state.user_message = message
+        #     state.intention = state.intention
+        #     state.trace = []
+        #     return self.create_workflow(state)
+        # else:
+        return self.create_workflow(state)
 
     # def continue_workflow(self, state: GraphState) -> GraphState:
     #     """
@@ -44,8 +46,6 @@ class MainGraph:
         Cria o workflow principal do grafo.
         """
         graph_builder = StateGraph(GraphState)
-
-        # router = self.build_router()
         
         graph_builder.add_node(CheckIntentionNodeStrategy.name(), RunnableLambda(CheckIntentionNodeStrategy().build))
         graph_builder.add_node(BalanceGraphFactory.name(), RunnableLambda(BalanceGraphFactory().build))
@@ -55,12 +55,6 @@ class MainGraph:
         graph_builder.add_node(FallbackGraph.name(), RunnableLambda(FallbackGraph().build))
 
         graph_builder.set_entry_point(CheckIntentionNodeStrategy.name())
-
-        # graph_builder.add_edge(CheckIntentionNodeStrategy.name(), BalanceGraphFactory.name())
-        # graph_builder.add_edge(CheckIntentionNodeStrategy.name(), GetLimitGraphFactory.name())
-        # graph_builder.add_edge(CheckIntentionNodeStrategy.name(), UpdateLimitGraphFactory.name())
-        # graph_builder.add_edge(CheckIntentionNodeStrategy.name(), PixGraph.name())
-        # graph_builder.add_edge(CheckIntentionNodeStrategy.name(), FallbackGraph.name())
 
         graph_builder.add_conditional_edges(
             CheckIntentionNodeStrategy.name(),
@@ -74,29 +68,28 @@ class MainGraph:
             }
         )
 
-        final_state = graph_builder.compile().invoke(state)
+        graph = graph_builder.compile()
 
-        # steps = graph.stream(state)
-
-        # print(type(steps))
-        # print(steps)
-
-        # for step in steps:
-        #     print("📦 step:", step)
-        #     if "__interrupt__" in step:
-        #         intr = step["__interrupt__"][0]
-        #         print("🚫 Interrompido com:", intr.value["message"])
-
-        # final_state = GraphState(**graph)
+        events = graph.stream(state)
+        
+        for event in events:
+            if "__interrupt__" in event:
+                intr = event["__interrupt__"][0]
+                new_state = self.interrupt_to_graph_state(intr, GraphState)
 
         logger.info("MainGraph criado")
 
-        # print("================================================")
-        # print(type(final_state))
-        # print(final_state)
-        # print("================================================")
+        print("================================================")
+        print(new_state)
+        print("================================================")
 
-        return final_state
+        return new_state
+
+    def interrupt_to_graph_state(self, intr: Interrupt, ModelCls):
+        val = intr.value
+        data = json.loads(val) if isinstance(val, str) else val
+        state_dict = data.get("state", data)
+        return ModelCls(**state_dict)
 
     @staticmethod
     def decidir_proximo_no_depois_input(state: GraphState) -> str:
@@ -118,23 +111,3 @@ class MainGraph:
 
         else:
             return FallbackGraph.name()
-
-    # def build_router(self):
-    #     """
-    #         O router é responsável por direcionar o fluxo do grafo com base na intenção do usuário.
-    #     """
-    #     saldo_graph = BalanceGraphFactory().build()
-    #     get_limite_graph = GetLimitGraphFactory().build()
-    #     update_limit_graph = UpdateLimitGraphFactory().build()
-    #     pix_graph = PixGraph().build()
-    #     fallback_graph = FallbackGraph().build()
-
-    #     router = RunnableBranch(
-    #         (lambda state: state.intention == "consultar_limite", get_limite_graph),
-    #         (lambda state: state.intention == "alterar_limite", update_limit_graph),
-    #         (lambda state: state.intention == "consultar_saldo", saldo_graph),
-    #         (lambda state: state.intention == "realizar_pix", pix_graph),
-    #         fallback_graph
-    #     )
-
-    #     return router
