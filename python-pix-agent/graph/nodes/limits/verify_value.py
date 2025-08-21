@@ -1,5 +1,5 @@
 from graph.graph_state import GraphState
-from infra.openai_client import OpenAIClientFactory
+from infra.client_singleton import get_client_instance
 from langchain_openai.chat_models import ChatOpenAI
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 from langgraph.types import interrupt
@@ -26,7 +26,7 @@ class VerifyLimitValueNodeStrategy(GraphStrategyInterface):
 
         logger.info("Node: Verify Limit Value")
 
-        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
+        chat: ChatOpenAI = get_client_instance()
 
         prompt = self.get_prompt(state)
 
