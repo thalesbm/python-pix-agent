@@ -31,6 +31,9 @@ class MainGraph:
         for event in events:
             if "__interrupt__" in event:
                 intr = event["__interrupt__"][0]
+                print("================================================")
+                print(intr)
+                print("================================================")
                 return self.interrupt_to_graph_state(intr, GraphState)
 
         payload = next(iter(event.values()))
