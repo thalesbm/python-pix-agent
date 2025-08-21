@@ -1,6 +1,5 @@
 from graph.graph_state import GraphState
 from langgraph.types import Interrupt
-from functools import lru_cache
 from graph.graphs import build_main_graph
 
 import json
@@ -17,30 +16,52 @@ class MainGraph:
         Cria o workflow principal do grafo.
         """
         logger.info(f"Iniciando grafo")
-        logger.info(f"user_id: {user_id}")
 
-        config = {
-            "configurable": {
-                "thread_id": f"user:{user_id}:conv:{user_id}"
-            }
-        }
+        initial_state = GraphState(user_message=message)
 
-        state = GraphState(user_message=message)
+        events = build_main_graph().stream(
+            initial_state, 
+            config=self.get_config(user_id)
+        )
 
-        events = build_main_graph().stream(state, config=config)
+        logger.info("Grafo compilado, salvo e executado")
         
+        last_state: GraphState = initial_state
+
         for event in events:
             if "__interrupt__" in event:
                 intr = event["__interrupt__"][0]
-                new_state = self.interrupt_to_graph_state(intr, GraphState)
+                return self.interrupt_to_graph_state(intr, GraphState)
+
+        try:
+            payload = next(iter(event.values()))
+        except StopIteration:
+            pass  # evento vazio (raro), ignore
+
+        # Se já vier como GraphState, ótimo; senão, valide/transforme
+        if isinstance(payload, GraphState):
+            last_state = payload
+        elif isinstance(payload, dict):
+            # caso seu nó retorne dict e não GraphState
+            last_state = GraphState(**payload)
+        else:
+            # opcional: logar formatos inesperados
+            logger.debug(f"Evento inesperado: {type(payload)}")
 
         logger.info("MainGraph criado")
 
         print("================================================")
-        print(new_state)
+        print(last_state)
         print("================================================")
 
-        return new_state
+        return last_state
+
+    def get_config(self, user_id: str) -> dict:
+        return {
+            "configurable": {
+                "thread_id": f"user:{user_id}:conv:{user_id}"
+            }
+        }
 
     def interrupt_to_graph_state(self, intr: Interrupt, ModelCls):
         val = intr.value

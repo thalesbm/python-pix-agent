@@ -18,15 +18,17 @@ class MainView:
         logger.info("Configurando View de Chat")
         
         users = {
-            "João": "123123123",
-            "Maria": "456456456",
-            "Pedro": "789789789"
+            "123123123": "João",
+            "456456456": "Maria",
+            "789789789": "Pedro"
         }
 
         selected_user = st.selectbox(
             "Selecione o Usuário:",
-            list(users.keys())
+            options=list(users.keys()),
+            format_func=lambda uid: users[uid]
         )
+        selected_name = users[selected_user]
 
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -53,11 +55,12 @@ class MainView:
             })
             
             with st.chat_message("user"):
+                st.markdown(selected_name)
                 st.markdown(prompt)
             
             with st.chat_message("assistant"):
                 with st.spinner("Processando sua solicitação..."):
-                    state = callback(prompt, users[selected_user])
+                    state = callback(prompt, selected_user)
                     
                     response_content = state.answer
                     response_details = state.trace

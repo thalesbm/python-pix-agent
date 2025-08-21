@@ -44,15 +44,7 @@ def build_main_graph() -> Runnable:
 
     logger.info("Grafo principal criado")
 
-    saver = get_saver()
-
-    logger.info("grafo principal salvo")
-
-    graph = graph_builder.compile(checkpointer=saver)
-
-    logger.info("grafo principal compilado")
-
-    return graph
+    return graph_builder.compile(checkpointer=get_saver())
 
 def decidir_proximo_no_depois_input(state: GraphState) -> str:
     logger.info("================================================")
