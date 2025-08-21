@@ -42,6 +42,9 @@ class MainView:
         with st.container():
             for message in st.session_state.messages:
                 with st.chat_message(message["role"]):
+                    if "name" in message and message["name"]:
+                        st.markdown(message["name"])
+                    
                     st.markdown(message["content"])
                     
                     if "details" in message and message["details"]:
@@ -50,6 +53,7 @@ class MainView:
         if prompt := st.chat_input("Digite sua mensagem aqui..."):
             st.session_state.messages.append({
                 "role": "user", 
+                "name": selected_name,
                 "content": prompt,
                 "timestamp": datetime.now()
             })
@@ -73,5 +77,4 @@ class MainView:
                     })
                     
                     st.markdown(response_content)
-                    st.markdown("Graph:")
                     st.markdown(response_details)

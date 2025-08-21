@@ -33,22 +33,14 @@ class MainGraph:
                 intr = event["__interrupt__"][0]
                 return self.interrupt_to_graph_state(intr, GraphState)
 
-        try:
-            payload = next(iter(event.values()))
-        except StopIteration:
-            pass  # evento vazio (raro), ignore
+        payload = next(iter(event.values()))
 
-        # Se já vier como GraphState, ótimo; senão, valide/transforme
         if isinstance(payload, GraphState):
             last_state = payload
         elif isinstance(payload, dict):
-            # caso seu nó retorne dict e não GraphState
             last_state = GraphState(**payload)
         else:
-            # opcional: logar formatos inesperados
             logger.debug(f"Evento inesperado: {type(payload)}")
-
-        logger.info("MainGraph criado")
 
         print("================================================")
         print(last_state)
