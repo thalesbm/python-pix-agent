@@ -11,12 +11,23 @@ class MainView:
     """Classe responsável pela interface de usuário usando Streamlit com modelo de chat."""
 
     @staticmethod
-    def set_view(callback: Callable[[str], GraphState]) -> None:
+    def set_view(callback: Callable[[str, str], GraphState]) -> None:
         """
         Configura a view de chat.
         """
         logger.info("Configurando View de Chat")
         
+        users = {
+            "João": "123123123",
+            "Maria": "456456456",
+            "Pedro": "789789789"
+        }
+
+        selected_user = st.selectbox(
+            "Selecione o Usuário:",
+            list(users.keys())
+        )
+
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
@@ -46,7 +57,7 @@ class MainView:
             
             with st.chat_message("assistant"):
                 with st.spinner("Processando sua solicitação..."):
-                    state = callback(prompt)
+                    state = callback(prompt, users[selected_user])
                     
                     response_content = state.answer
                     response_details = state.trace

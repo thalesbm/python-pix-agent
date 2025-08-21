@@ -196,6 +196,7 @@ cython_debug/
 
 # Project
 images/
+database/
 .DS_Store
 
 # Cursor

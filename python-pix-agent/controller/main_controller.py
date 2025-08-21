@@ -8,10 +8,10 @@ class MainController:
     def __init__(self):
         pass
 
-    def run(self, message: str, state: GraphState = None):
+    def run(self, message: str, user_id: str):
         """
         Executa o workflow principal.
         """
         logger.info(f"Mensagem recebida na MainController: {message}")
 
-        return MainGraph().build(message=message, state=state)
+        return MainGraph().build(message=message, user_id=user_id)
