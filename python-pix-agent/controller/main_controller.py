@@ -13,5 +13,6 @@ class MainController:
         Executa o workflow principal.
         """
         logger.info(f"Mensagem recebida na MainController: {message}")
+        logger.info(f"UserId na MainController: {user_id}")
 
         return MainGraph().build(message=message, user_id=user_id)

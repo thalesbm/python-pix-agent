@@ -1,6 +1,9 @@
 from graph.graph_state import GraphState
 from langgraph.types import Interrupt
 from graph.graphs import build_main_graph
+from graph.graphs.checkpointer import CHECKPOINT_DB
+from langgraph.checkpoint.sqlite import SqliteSaver
+from commons.session.session_store import SessionStore          # ✅ seu store custom
 
 import json
 
@@ -9,7 +12,7 @@ logger = get_logger(__name__)
 
 class MainGraph:
     def __init__(self):
-        pass
+        self.store = SessionStore(CHECKPOINT_DB)
 
     def build(self, message: str, user_id: str) -> GraphState:
         """
@@ -17,16 +20,27 @@ class MainGraph:
         """
         logger.info(f"Iniciando grafo")
 
-        initial_state = GraphState(user_message=message)
+        cfg = self.get_config(user_id)
+        thread_id = cfg["configurable"]["thread_id"]
+
+        waiting, _last_prompt = self.store.get_waiting(thread_id)
+        if waiting:
+            logger.info(f"Iniciando grafo com user_message: {message} (interrupt)")
+            input_for_graph = message
+        else:
+            logger.info(f"Iniciando grafo com user_message: {message} (normal)")
+            input_for_graph = GraphState(user_message=message)
+
+        # initial_state = GraphState(user_message=message)
 
         events = build_main_graph().stream(
-            initial_state, 
-            config=self.get_config(user_id)
+            input_for_graph, 
+            config=cfg
         )
 
         logger.info("Grafo compilado, salvo e executado")
         
-        last_state: GraphState = initial_state
+        # last_state: GraphState = input_for_graph
 
         for event in events:
             if "__interrupt__" in event:
@@ -39,17 +53,19 @@ class MainGraph:
         payload = next(iter(event.values()))
 
         if isinstance(payload, GraphState):
-            last_state = payload
+            input_for_graph = payload
         elif isinstance(payload, dict):
-            last_state = GraphState(**payload)
+            input_for_graph = GraphState(**payload)
         else:
             logger.debug(f"Evento inesperado: {type(payload)}")
 
+        self.store.set_waiting(thread_id, False, None)
+
         print("================================================")
-        print(last_state)
+        print(input_for_graph)
         print("================================================")
 
-        return last_state
+        return input_for_graph
 
     def get_config(self, user_id: str) -> dict:
         return {
