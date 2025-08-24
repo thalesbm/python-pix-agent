@@ -1,10 +1,1 @@
 LangGraph
-
-🔧 Persistência/estado:
-Considere checkpointer para persistir o GraphState (memória entre execuções/erros).
-
-🔧 Interrupções explícitas:
-Use interrupt para coletar dados faltantes do usuário (ex.: pedir chave ou valor faltantes) em vez de encerrar o fluxo.
-
-🔧 Adote um checkpointer (ex.: MemorySaver em dev; SqliteSaver/RedisSaver em prod) para:
-- Retomar fluxos interrompidos

@@ -12,8 +12,12 @@ from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class BalanceGraphFactory(GraphFactory):
+
+    @staticmethod
+    def name() -> str:
+        return "balance-graph"
     
-    def build(self) -> GraphBlueprint:
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de saldo do grafo.
         """
@@ -35,6 +39,8 @@ class BalanceGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name()],
         )
 
-        graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)
-        
-        return graph
+        final_state = GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
+
+        logger.info("BalanceGraph criado")
+
+        return final_state

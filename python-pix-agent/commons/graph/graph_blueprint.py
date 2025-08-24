@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from commons.graph.model.graph import GraphBlueprint
+from graph.graph_state import GraphState
 
 from commons.utils.print_graph import config_print_graph
 
@@ -9,7 +10,7 @@ class GraphBlueprintBuilder:
     def __init__(self, state_type):
         self.state_type = state_type
 
-    def build(self, graph_blueprint: GraphBlueprint):
+    def build(self, graph_blueprint: GraphBlueprint, state: GraphState):
         """
         Cria o grafo com base no blueprint.
         """
@@ -22,7 +23,7 @@ class GraphBlueprintBuilder:
         self._add_endpoints(graph_builder, graph_blueprint)
         self._after_build(graph_builder, graph_blueprint)
         
-        return graph_builder.compile()
+        return graph_builder.compile().invoke(state)
 
     def _add_entry_point(self, graph_builder: StateGraph, graph_blueprint: GraphBlueprint):
         """
