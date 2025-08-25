@@ -2,7 +2,7 @@ from typing import Callable
 import streamlit as st
 from datetime import datetime
 
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
 from commons.logger import get_logger
 logger = get_logger(__name__)

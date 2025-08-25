@@ -2,7 +2,7 @@ from commons.graph.model.graph import GraphBlueprint
 from commons.graph.model.node import Node
 from commons.graph.model.edge import Edge
 from commons.graph.graph_blueprint import GraphBlueprintBuilder
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.balance.get_balance import GetBalanceNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
 class GraphStrategyInterface(ABC):
     

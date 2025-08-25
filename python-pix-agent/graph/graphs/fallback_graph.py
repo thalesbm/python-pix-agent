@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.generic.fallback import FallbackNodeStrategy
 from commons.utils.print_graph import config_print_graph
 

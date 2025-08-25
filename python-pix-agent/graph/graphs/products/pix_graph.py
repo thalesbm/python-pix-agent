@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.pix.check_value_key import CheckValueKeyNodeStrategy
 from graph.nodes.pix.simulate_pix import SimulatePixNodeStrategy
 from graph.nodes.pix.effective_pix import EffectivePixNodeStrategy

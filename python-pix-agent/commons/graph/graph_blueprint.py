@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
 from commons.graph.model.graph import GraphBlueprint
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
 from commons.utils.print_graph import config_print_graph
 

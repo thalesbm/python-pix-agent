@@ -1,4 +1,4 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.limits.verify_value import VerifyLimitValueNodeStrategy
 from graph.nodes.limits.update_limit import UpdateLimitNodeStrategy
 from graph.nodes.receipt.receipt import ReceiptNodeStrategy

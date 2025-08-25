@@ -1,4 +1,4 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from infra.client_singleton import get_client_instance
 from pipeline.openai import Key
 from langchain_openai.chat_models import ChatOpenAI

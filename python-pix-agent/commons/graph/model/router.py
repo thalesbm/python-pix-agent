@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List 
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
 
 @dataclass(frozen=True)

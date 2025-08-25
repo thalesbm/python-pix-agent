@@ -1,5 +1,5 @@
 from graph.graphs.main_graph import MainGraph
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
 from commons.logger import get_logger
 logger = get_logger(__name__)

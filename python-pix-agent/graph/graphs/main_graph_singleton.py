@@ -1,4 +1,4 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from langgraph.graph import StateGraph
 from langchain_core.runnables import RunnableLambda
 from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy

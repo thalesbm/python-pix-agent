@@ -1,4 +1,4 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from langgraph.types import Interrupt
 from graph.graphs import build_main_graph
 from graph.graphs.checkpointer import CHECKPOINT_DB
