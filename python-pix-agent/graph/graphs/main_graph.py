@@ -1,6 +1,6 @@
 from graph.state.graph_state import GraphState
 from langgraph.types import Interrupt
-from graph.graphs import build_main_graph
+from graph.graphs.main_graph_singleton import build_main_graph
 from graph.graphs.checkpointer import CHECKPOINT_DB
 from langgraph.checkpoint.sqlite import SqliteSaver
 from commons.session.session_store import SessionStore          # ✅ seu store custom
