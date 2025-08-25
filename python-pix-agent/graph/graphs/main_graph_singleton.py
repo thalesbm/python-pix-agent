@@ -4,7 +4,7 @@ from langchain_core.runnables import RunnableLambda
 from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
 from graph.subgraphs.products import BalanceGraphFactory, GetLimitGraphFactory, UpdateLimitGraphFactory, PixGraph
 from graph.subgraphs import FallbackGraph
-from graph.graphs.checkpointer import get_saver
+from commons.database.checkpointer import get_saver
 from functools import lru_cache     
 from langchain_core.runnables import Runnable
 

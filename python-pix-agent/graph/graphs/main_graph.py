@@ -1,9 +1,8 @@
 from graph.state.graph_state import GraphState
 from langgraph.types import Interrupt
 from graph.graphs.main_graph_singleton import build_main_graph
-from graph.graphs.checkpointer import CHECKPOINT_DB
-from langgraph.checkpoint.sqlite import SqliteSaver
-from commons.session.session_store import SessionStore          # ✅ seu store custom
+# from commons.database.checkpointer import create_db_dir
+# from commons.session.session_store import SessionStore
 
 import json
 
@@ -12,7 +11,8 @@ logger = get_logger(__name__)
 
 class MainGraph:
     def __init__(self):
-        self.store = SessionStore(CHECKPOINT_DB)
+        pass
+        # self.store = SessionStore(create_db_dir())
 
     def build(self, message: str, user_id: str) -> GraphState:
         """
@@ -21,17 +21,15 @@ class MainGraph:
         logger.info(f"Iniciando grafo")
 
         cfg = self.get_config(user_id)
-        thread_id = cfg["configurable"]["thread_id"]
+        # thread_id = cfg["configurable"]["thread_id"]
 
-        waiting, _last_prompt = self.store.get_waiting(thread_id)
-        if waiting:
-            logger.info(f"Iniciando grafo com user_message: {message} (interrupt)")
-            input_for_graph = message
-        else:
-            logger.info(f"Iniciando grafo com user_message: {message} (normal)")
-            input_for_graph = GraphState(user_message=message)
-
-        # initial_state = GraphState(user_message=message)
+        # waiting, _last_prompt = self.store.get_waiting(thread_id)
+        # if waiting:
+            # logger.info(f"Iniciando grafo com user_message: {message} (interrupt)")
+            # input_for_graph = message
+        # else:
+        logger.info(f"Iniciando grafo com user_message: {message} (normal)")
+        input_for_graph = GraphState(user_message=message)
 
         events = build_main_graph().stream(
             input_for_graph, 
@@ -40,8 +38,6 @@ class MainGraph:
 
         logger.info("Grafo compilado, salvo e executado")
         
-        # last_state: GraphState = input_for_graph
-
         for event in events:
             if "__interrupt__" in event:
                 intr = event["__interrupt__"][0]
@@ -59,7 +55,11 @@ class MainGraph:
         else:
             logger.debug(f"Evento inesperado: {type(payload)}")
 
-        self.store.set_waiting(thread_id, False, None)
+        # self.store.set_waiting(thread_id, False, None)
+
+        print("================================================")
+        print(events)
+        print("================================================")
 
         print("================================================")
         print(input_for_graph)
