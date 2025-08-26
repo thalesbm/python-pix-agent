@@ -1,4 +1,4 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
 from commons.logger import get_logger

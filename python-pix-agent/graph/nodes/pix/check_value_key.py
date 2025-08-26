@@ -1,5 +1,5 @@
-from graph.graph_state import GraphState
-from infra.openai_client import OpenAIClientFactory
+from graph.state.graph_state import GraphState
+from infra.client_singleton import get_client_instance
 from pipeline.openai import Key
 from langchain_openai.chat_models import ChatOpenAI
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
@@ -22,7 +22,7 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
         super().build(state) 
         logger.info("Node: Check Value Key")
 
-        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
+        chat: ChatOpenAI = get_client_instance()
 
         structured_output = chat.with_structured_output(PixModel)
         chain = self.get_prompt() | structured_output
@@ -37,7 +37,6 @@ class CheckValueKeyNodeStrategy(GraphStrategyInterface):
         logger.info(f"response.tem_chave: {response.has_key}")
         logger.info(f"response.valor: {response.value}")
         logger.info(f"response.chave: {response.key}")
-        logger.info(f"response.tipo_chave: {response.key_type}")
         logger.info(f"response.more_information: {response.more_information}")
 
         if response.has_value:

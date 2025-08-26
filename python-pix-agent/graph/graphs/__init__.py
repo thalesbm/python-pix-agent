@@ -2,8 +2,10 @@
 Graph State module - Sistema de estado do grafo.
 """
 
-from .fallback_graph import FallbackGraph
+from .main_graph import MainGraph
+from .main_graph_singleton import build_main_graph
 
 __all__ = [
-    "FallbackGraph",
-] 
+    "MainGraph",
+    "build_main_graph"
+]   

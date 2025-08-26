@@ -195,7 +195,7 @@ cython_debug/
 .pypirc
 
 # Project
-images/
+temp/
 .DS_Store
 
 # Cursor

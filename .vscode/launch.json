@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Streamlit: Launch (module)",
+        "type": "python",
+        "request": "launch",
+        "module": "streamlit",
+        "args": [
+          "run",
+          "python-pix-agent/app.py",
+          "--server.runOnSave",
+          "false",
+          "--logger.level",
+          "debug"
+        ],
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}",
+          "PYTHONUNBUFFERED": "1"
+        },
+        "console": "integratedTerminal",
+        "justMyCode": true,
+        "subProcess": true
+      },
+      {
+        "name": "Attach to debugpy:5678",
+        "type": "python",
+        "request": "attach",
+        "connect": { "host": "localhost", "port": 5678 },
+        "justMyCode": true
+      }
+    ]
+}
+  

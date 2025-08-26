@@ -2,7 +2,7 @@ from commons.graph.model.graph import GraphBlueprint
 from commons.graph.model.node import Node
 from commons.graph.model.edge import Edge
 from commons.graph.graph_blueprint import GraphBlueprintBuilder
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.balance.get_balance import GetBalanceNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
@@ -12,8 +12,12 @@ from commons.logger import get_logger
 logger = get_logger(__name__)
 
 class BalanceGraphFactory(GraphFactory):
+
+    @staticmethod
+    def name() -> str:
+        return "balance-graph"
     
-    def build(self) -> GraphBlueprint:
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de saldo do grafo.
         """
@@ -35,6 +39,8 @@ class BalanceGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name()],
         )
 
-        graph = GraphBlueprintBuilder(GraphState).build(graph_blueprint)
-        
-        return graph
+        final_state = GraphBlueprintBuilder(GraphState).build(graph_blueprint, state)
+
+        logger.info("BalanceGraph criado")
+
+        return final_state

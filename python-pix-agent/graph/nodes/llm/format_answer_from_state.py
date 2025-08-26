@@ -1,7 +1,7 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
-from graph.graph_state import GraphState
-from infra.openai_client import OpenAIClientFactory
+from graph.state.graph_state import GraphState
+from infra.client_singleton import get_client_instance
 from langchain_openai.chat_models import ChatOpenAI 
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 
@@ -21,7 +21,7 @@ class FormatAnswerFromStateNodeStrategy(GraphStrategyInterface):
 
         logger.info("Node: Format Answer From State")
 
-        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
+        chat: ChatOpenAI = get_client_instance()
 
         prompt = self.get_prompt(state)
         response = chat.invoke(prompt)

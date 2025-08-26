@@ -1,4 +1,4 @@
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.limits.get_limit import GetLimitNodeStrategy
 from graph.nodes.llm.format_answer_from_state import FormatAnswerFromStateNodeStrategy
 from graph.nodes.generic.clean_state import CleanStateNodeStrategy
@@ -14,7 +14,11 @@ logger = get_logger(__name__)
 
 class GetLimitGraphFactory(GraphFactory):
 
-    def build(self) -> GraphBlueprint:    
+    @staticmethod
+    def name() -> str:
+        return "get-limit-graph"
+
+    def build(self, state: GraphState) -> GraphState:    
         """
         Cria o workflow de limite do grafo.
         """
@@ -35,8 +39,8 @@ class GetLimitGraphFactory(GraphFactory):
             end_nodes=[CleanStateNodeStrategy.name()],
         )
 
-        graph = GraphBlueprintBuilder(GraphState).build(graph)
+        final_state = GraphBlueprintBuilder(GraphState).build(graph, state)
 
         logger.info("GetLimitGraph criado")
 
-        return graph
+        return final_state

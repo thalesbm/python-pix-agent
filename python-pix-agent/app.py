@@ -3,16 +3,14 @@ from config import get_config
 from view.main_view import MainView
 import streamlit as st
 
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 
 from commons.logger import setup_logging, get_logger
 logger = get_logger(__name__)
 
 def init():
-    # Carrega configuração
     config = get_config()
-    
-    # Configura logging centralizado
+
     setup_logging(
         level=config.logging.level,
         format_string=config.logging.format,
@@ -22,16 +20,12 @@ def init():
 
     MainView.set_view(process_message)
 
-def process_message(message: str):
+def process_message(message: str, user_id: str):
     """
     Processa a mensagem recebida.
     """
-    if "graph_state" not in st.session_state:
-        st.session_state.graph_state = GraphState(user_message=message)
-
     logger.info(f"Mensagem recebida: {message}")
-    state = MainController().run(message=message, state=st.session_state.graph_state)
-    st.session_state.graph_state = state
+    state = MainController().run(message=message, user_id=user_id)
 
     return state
 

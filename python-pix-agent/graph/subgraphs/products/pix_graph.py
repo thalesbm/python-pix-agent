@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.pix.check_value_key import CheckValueKeyNodeStrategy
 from graph.nodes.pix.simulate_pix import SimulatePixNodeStrategy
 from graph.nodes.pix.effective_pix import EffectivePixNodeStrategy
@@ -22,7 +22,11 @@ class PixGraph:
     def __init__(self):
         pass
 
-    def build(self):
+    @staticmethod
+    def name() -> str:
+        return "pix-graph"
+
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de pix do grafo.
         """
@@ -65,13 +69,13 @@ class PixGraph:
         graph_builder.add_edge(CleanStateNodeStrategy.name(), END)
         graph_builder.add_edge(FinishSimpleFlowNodeStrategy.name(), END)
 
-        graph = graph_builder.compile()
+        final_state = graph_builder.compile().invoke(state)
 
-        config_print_graph(graph, "pix")
+        config_print_graph(final_state, "pix")
 
         logger.info("PixGraph criado")
 
-        return graph
+        return final_state
 
     @staticmethod
     def decidir_proximo_no_depois_input(state: GraphState) -> str:

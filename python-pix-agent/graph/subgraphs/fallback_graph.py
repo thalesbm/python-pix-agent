@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.runnables import RunnableLambda
-from graph.graph_state import GraphState
+from graph.state.graph_state import GraphState
 from graph.nodes.generic.fallback import FallbackNodeStrategy
 from commons.utils.print_graph import config_print_graph
 
@@ -11,7 +11,11 @@ class FallbackGraph:
     def __init__(self):
         pass
 
-    def build(self):
+    @staticmethod
+    def name() -> str:
+        return "fallback-graph"
+
+    def build(self, state: GraphState) -> GraphState:
         """
         Cria o workflow de fallback do grafo.
         """
@@ -23,9 +27,9 @@ class FallbackGraph:
         graph_builder.set_entry_point(FallbackNodeStrategy.name())
         graph_builder.add_edge(FallbackNodeStrategy.name(), END)
 
-        graph = graph_builder.compile()
+        final_state = graph_builder.compile().invoke(state)
         logger.info("FallbackGraph criado")
 
-        config_print_graph(graph, "fallback")
+        config_print_graph(final_state, "fallback")
 
-        return graph
+        return final_state

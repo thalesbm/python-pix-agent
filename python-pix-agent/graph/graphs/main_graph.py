@@ -1,10 +1,10 @@
-from graph.graph_state import GraphState
-from langgraph.graph import StateGraph, END
-from langchain_core.runnables import RunnableLambda, RunnableBranch
-from graph.nodes.llm.check_intention import CheckIntentionNodeStrategy
-from graph.graphs.products import BalanceGraphFactory, GetLimitGraphFactory, UpdateLimitGraphFactory, PixGraph
-from graph.graphs import FallbackGraph
-from graph.nodes.generic.clean_state import CleanStateNodeStrategy
+from graph.state.graph_state import GraphState
+from langgraph.types import Interrupt
+from graph.graphs.main_graph_singleton import build_main_graph
+# from commons.database.checkpointer import create_db_dir
+# from commons.session.session_store import SessionStore
+
+import json
 
 from commons.logger import get_logger
 logger = get_logger(__name__)
@@ -12,72 +12,70 @@ logger = get_logger(__name__)
 class MainGraph:
     def __init__(self):
         pass
+        # self.store = SessionStore(create_db_dir())
 
-    def build(self, message: str, state: GraphState = None) -> GraphState:
-        """
-        Gerencia o workflow do grafo.
-        """
-        logger.info("Criando MainGraph")
-        logger.info("Criando MainGraph")
-        
-        if state is None or CleanStateNodeStrategy.name() in state.trace:
-            state = GraphState(user_message=message)
-
-        if state.intention:
-            state.user_message = message
-            state.intention = state.intention
-            state.trace = []
-            return self.continue_workflow(state)
-        else:
-            return self.create_workflow(state)
-
-    def continue_workflow(self, state: GraphState) -> GraphState:
-        """
-        Continua o workflow principal do grafo.
-        """
-        router = self.build_router()
-        final_state = router.invoke(state)
-        return GraphState(**final_state)
-
-    def create_workflow(self, state: GraphState) -> GraphState:
+    def build(self, message: str, user_id: str) -> GraphState:
         """
         Cria o workflow principal do grafo.
         """
-        graph_builder = StateGraph(GraphState)
+        logger.info(f"Iniciando grafo")
 
-        router = self.build_router()
-        
-        graph_builder.add_node(CheckIntentionNodeStrategy.name(), RunnableLambda(CheckIntentionNodeStrategy().build))
-        graph_builder.add_node("router", router)
+        cfg = self.get_config(user_id)
+        # thread_id = cfg["configurable"]["thread_id"]
 
-        graph_builder.set_entry_point(CheckIntentionNodeStrategy.name())
+        # waiting, _last_prompt = self.store.get_waiting(thread_id)
+        # if waiting:
+            # logger.info(f"Iniciando grafo com user_message: {message} (interrupt)")
+            # input_for_graph = message
+        # else:
+        logger.info(f"Iniciando grafo com user_message: {message} (normal)")
+        input_for_graph = GraphState(user_message=message)
 
-        graph_builder.add_edge(CheckIntentionNodeStrategy.name(), "router")
-
-        graph = graph_builder.compile().invoke(state)
-        
-        final_state = GraphState(**graph)
-
-        logger.info("MainGraph criado")
-
-        return final_state
-
-    def build_router(self):
-        """
-            O router é responsável por direcionar o fluxo do grafo com base na intenção do usuário.
-        """
-        saldo_graph = BalanceGraphFactory().build()
-        get_limite_graph = GetLimitGraphFactory().build()
-        update_limit_graph = UpdateLimitGraphFactory().build()
-        pix_graph = PixGraph().build()
-        fallback_graph = FallbackGraph().build()
-
-        router = RunnableBranch(
-            (lambda state: state.intention == "consultar_limite", get_limite_graph),
-            (lambda state: state.intention == "alterar_limite", update_limit_graph),
-            (lambda state: state.intention == "consultar_saldo", saldo_graph),
-            (lambda state: state.intention == "realizar_pix", pix_graph),
-            fallback_graph
+        events = build_main_graph().stream(
+            input_for_graph, 
+            config=cfg
         )
 
-        return router
+        logger.info("Grafo compilado, salvo e executado")
+        
+        for event in events:
+            if "__interrupt__" in event:
+                intr = event["__interrupt__"][0]
+                print("================================================")
+                print(intr)
+                print("================================================")
+                return self.interrupt_to_graph_state(intr, GraphState)
+
+        payload = next(iter(event.values()))
+
+        if isinstance(payload, GraphState):
+            input_for_graph = payload
+        elif isinstance(payload, dict):
+            input_for_graph = GraphState(**payload)
+        else:
+            logger.debug(f"Evento inesperado: {type(payload)}")
+
+        # self.store.set_waiting(thread_id, False, None)
+
+        print("================================================")
+        print(events)
+        print("================================================")
+
+        print("================================================")
+        print(input_for_graph)
+        print("================================================")
+
+        return input_for_graph
+
+    def get_config(self, user_id: str) -> dict:
+        return {
+            "configurable": {
+                "thread_id": f"user:{user_id}:conv:{user_id}"
+            }
+        }
+
+    def interrupt_to_graph_state(self, intr: Interrupt, ModelCls):
+        val = intr.value
+        data = json.loads(val) if isinstance(val, str) else val
+        state_dict = data.get("state", data)
+        return ModelCls(**state_dict)
