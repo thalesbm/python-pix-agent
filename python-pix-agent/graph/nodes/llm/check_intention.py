@@ -2,6 +2,8 @@ from graph.graph_state import GraphState
 from infra.openai_client import OpenAIClientFactory
 from langchain_openai.chat_models import ChatOpenAI
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
+from google import genai
+from google.genai import types
 
 from commons.logger import get_logger
 logger = get_logger(__name__)
@@ -19,18 +21,24 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
 
         logger.info(f"Recebendo o estado: {state}")
 
-        chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
+        client = genai.Client(api_key="AIzaSyCK790qqhAxdL1OD9lrpN1w05r6Rexjphk")
 
         prompt = self.get_prompt(state)
 
-        response = chat.invoke(prompt)
+        response = client.models.generate_content(
+            model="gemini-3-pro-preview",
+            contents=[types.Content(role="user", parts=[types.Part(text=prompt)])],
+        )
+        state.intention = response.text
 
-        state.intention = response.content
+        # chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
+
+        # response = chat.invoke(prompt)
 
         logger.info("================================================")
         logger.info(f"Prompt: {prompt}")
         logger.info(f"Intenção: {state.intention}")
-        logger.info(f"Resposta: {response.content}")
+        logger.info(f"Resposta: {response.text}")
         logger.info("================================================")
 
         return state

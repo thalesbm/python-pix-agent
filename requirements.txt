@@ -10,3 +10,6 @@ langchain-openai==0.3.28
 langgraph==0.6.3
 ragas==0.3.0
 datasets==4.0.0
+
+pydantic
+google-genai
