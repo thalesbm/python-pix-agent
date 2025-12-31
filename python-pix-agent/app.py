@@ -1,7 +1,5 @@
 from controller.main_controller import MainController
 from config import get_config
-from view.main_view import MainView
-import streamlit as st
 
 from graph.graph_state import GraphState
 
@@ -20,18 +18,16 @@ def init():
     
     logger.info("Bem vindo ao melhor mini agente do mundo")
 
-    MainView.set_view(process_message)
+    process_message("saldo")
 
 def process_message(message: str):
     """
     Processa a mensagem recebida.
     """
-    if "graph_state" not in st.session_state:
-        st.session_state.graph_state = GraphState(user_message=message)
 
     logger.info(f"Mensagem recebida: {message}")
-    state = MainController().run(message=message, state=st.session_state.graph_state)
-    st.session_state.graph_state = state
+    state = MainController().run(message=message)
+    print("Resposta do agente:", state.answer)
 
     return state
 
