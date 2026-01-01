@@ -1,9 +1,10 @@
 from graph.graph_state import GraphState
-from infra.openai_client import OpenAIClientFactory
-from langchain_openai.chat_models import ChatOpenAI
 from graph.nodes.graph_strategy_interface import GraphStrategyInterface
 from google import genai
 from google.genai import types
+import vertexai
+import os
+from vertexai.generative_models import GenerativeModel, Content, Part
 
 from commons.logger import get_logger
 logger = get_logger(__name__)
@@ -21,19 +22,23 @@ class CheckIntentionNodeStrategy(GraphStrategyInterface):
 
         logger.info(f"Recebendo o estado: {state}")
 
-        client = genai.Client(api_key="AIzaSyCK790qqhAxdL1OD9lrpN1w05r6Rexjphk")
-
         prompt = self.get_prompt(state)
 
-        response = client.models.generate_content(
-            model="gemini-3-pro-preview",
-            contents=[types.Content(role="user", parts=[types.Part(text=prompt)])],
+        # client = genai.Client(api_key="AIzaSyCK790qqhAxdL1OD9lrpN1w05r6Rexjphk")
+        # response = client.models.generate_content(
+        #     model="gemini-3-pro-preview",
+        #     contents=[types.Content(role="user", parts=[types.Part(text=prompt)])],
+        # )
+
+        os.environ.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
+
+        vertexai.init(project="vertexaipocaccount2", location="southamerica-east1")
+        model = GenerativeModel("gemini-3-pro")
+        response = model.generate_content(
+            [Content(role="user", parts=[Part.from_text(prompt)])],
         )
+
         state.intention = response.text
-
-        # chat: ChatOpenAI = OpenAIClientFactory().create_basic_client()
-
-        # response = chat.invoke(prompt)
 
         logger.info("================================================")
         logger.info(f"Prompt: {prompt}")

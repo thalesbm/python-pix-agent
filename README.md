@@ -36,3 +36,6 @@ python3 -m streamlit run python-pix-agent/app.py
 - **Modelo**: `gpt-4o-mini`
 - **Temperatura**: `0`
 - **Tokens máximos**: `1000`
+
+gcloud auth application-default login
+
